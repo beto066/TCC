@@ -14,25 +14,24 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @MappedSuperclass
 public class DefaultEntity extends PanacheEntityBase {
-   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(name = "data_cadastro")
-    public LocalDate dataCadastro;
+    @Column(name = "created_at")
+    public LocalDate createdAt;
 
-    @Column(name = "data_alteracao")
-    public LocalDate dataAlteracao;
+    @Column(name = "updated_at")
+    public LocalDate updatedAt;
 
     @PrePersist
     public void prePersist() {
-        dataCadastro = LocalDate.now();
+        createdAt = LocalDate.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        dataAlteracao = LocalDate.now();
+        updatedAt = LocalDate.now();
     }
 
     @Override
@@ -45,18 +44,23 @@ public class DefaultEntity extends PanacheEntityBase {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         DefaultEntity other = (DefaultEntity) obj;
         if (id == null) {
-            if (other.id != null)
+            if (other.id != null){
                 return false;
-        } else if (!id.equals(other.id))
+            }
+        } else if (!id.equals(other.id)){
             return false;
+        }
         return true;
     }
 }

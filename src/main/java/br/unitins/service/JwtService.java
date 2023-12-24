@@ -5,15 +5,13 @@ import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 
-import br.unitins.model.Usuario;
+import br.unitins.model.Users;
 import io.smallrye.jwt.build.Jwt;
 
 @Singleton
 public class JwtService {
-
-    public String generateJwt(Usuario usuario) {
-
-        Set<String> roles = usuario.roles
+    public String generateJwt(Users user) {
+        Set<String> roles = user.roles
                 .stream().map(r -> r.getLabel())
                 .collect(Collectors.toSet());
 
@@ -22,13 +20,11 @@ public class JwtService {
 
         // upn - User Principal Name
         return Jwt.issuer("unitins-jwt")
-                .claim("email", usuario.email)
-                .claim("nome", usuario.nome)
-                .upn(usuario.email)
+                .claim("email", user.email)
+                .claim("name", user.name)
+                .upn(user.email)
                 .groups(roles)
                 .expiresAt(duration)
                 .sign();
-
     }
-
 }

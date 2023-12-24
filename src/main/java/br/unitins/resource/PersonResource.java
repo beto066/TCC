@@ -6,22 +6,21 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import br.unitins.model.Pessoa;
+import br.unitins.model.Person;
 
-@Path("/pessoa")
-public class PessoaResource  {
-   
+@Path("/person")
+public class PersonResource  {
     @GET
-    @Path("/search/{nome}")
+    @Path("/search/{name}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Pessoa getPessoa(String nome) {
-       return Pessoa.findByNome(nome);
+    public Person getPerson(String name) {
+       return Person.findByName(name);
     }
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String teste() {
+    public String test() {
         return System.getProperty("user.home");
     }
    

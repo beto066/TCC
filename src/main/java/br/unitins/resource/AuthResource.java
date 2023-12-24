@@ -9,9 +9,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import br.unitins.dto.AuthUsuarioDTO;
-import br.unitins.model.Usuario;
-import br.unitins.repository.UsuarioRepository;
+import br.unitins.dto.AuthDTO;
+import br.unitins.model.Users;
+import br.unitins.repository.UserRepository;
 import br.unitins.service.JwtService;
 import br.unitins.service.PasswordService;
 
@@ -19,7 +19,7 @@ import br.unitins.service.PasswordService;
 public class AuthResource {
 
     @Inject
-    UsuarioRepository repository;
+    UserRepository repository;
     
     @Inject
     PasswordService pService;
@@ -30,18 +30,17 @@ public class AuthResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response login(AuthUsuarioDTO usuario) {
+    public Response login(AuthDTO user) {
+        String hash = pService.getHash(user.getPassword());
 
-        String hash = pService.getHash(usuario.getSenha());
+        Users validUser = repository.findByEmailAndPassword(user.getEmail(), hash);
 
-        Usuario usuarioValido = repository.findByEmailAndSenha(usuario.getEmail(), hash);
-
-        if (usuarioValido == null)
-        return Response.status(Status.NO_CONTENT).entity("Usuário não encontrado.").build();
-    else 
-        return Response.ok()
-            .header("Authorization", jwtService.generateJwt(usuarioValido))
-            .build();
+        if (validUser == null){
+            return Response.status(Status.NO_CONTENT).entity("Usuário não encontrado.").build();
+        } else {
+            return Response.ok()
+                .header("Authorization", jwtService.generateJwt(validUser))
+                .build();
+        }
     }
-    
 }

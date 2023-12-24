@@ -10,7 +10,6 @@ import javax.inject.Singleton;
 
 @Singleton
 public class PasswordService {
-
     private String salt = "blAh%@#11!";
     private Integer iterationCount = 405;
     private Integer keylength = 512;
@@ -18,10 +17,16 @@ public class PasswordService {
     public String getHash(CharSequence password) {
         try {
             byte[] result = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512")
-                    .generateSecret(
-                            new PBEKeySpec(password.toString().toCharArray(), salt.getBytes(), iterationCount, keylength)
-                        )
-                    .getEncoded();
+                .generateSecret(
+                    new PBEKeySpec(
+                        password.toString().toCharArray(), 
+                        salt.getBytes(), 
+                        iterationCount, 
+                        keylength
+                    )
+                )
+                .getEncoded();
+
             return Base64.getEncoder().encodeToString(result);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
@@ -32,5 +37,4 @@ public class PasswordService {
         PasswordService service = new PasswordService();
         System.out.println(service.getHash("123"));
     }
-
 }

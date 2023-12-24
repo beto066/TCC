@@ -21,20 +21,19 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
-import br.unitins.dto.UsuarioResponseDTO;
-import br.unitins.form.UsuarioForm;
-import br.unitins.model.Usuario;
-import br.unitins.repository.UsuarioRepository;
+import br.unitins.dto.UserResponseDTO;
+import br.unitins.form.UserForm;
+import br.unitins.model.Users;
+import br.unitins.repository.UserRepository;
 import br.unitins.service.FileService;
 import br.unitins.service.PasswordService;
 
-@Path("/usuarios")
+@Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class UsuarioResource {
-
+public class UserResource {
     @Inject
-    private UsuarioRepository repository;
+    private UserRepository repository;
 
     @Inject
     private FileService fileService;
@@ -43,79 +42,78 @@ public class UsuarioResource {
     PasswordService pService;
 
     @GET
-    public List<Usuario> getAll() {
-        return repository.findAllUsuarios2();
+    public List<Users> getAll() {
+        return repository.findAllUsers2();
     }
 
     @GET
-    @Path("/search/{nome}")
-    public List<UsuarioResponseDTO> getListUsuario(String nome) {
-        return repository.findByNome(nome);
+    @Path("/search/{name}")
+    public List<UserResponseDTO> getListUser(@PathParam("name") String name) {
+        return repository.findByName(name);
     }
 
     @GET
     @Path("/{id}")
-    public UsuarioResponseDTO get(Long id) {
-        return new UsuarioResponseDTO(repository.findById(id));
+    public UserResponseDTO get(@PathParam("id") Long id) {
+        return new UserResponseDTO(repository.findById(id));
     }
 
     @POST
     @Path("/postupload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Transactional
-    public Response create(@MultipartForm UsuarioForm form) {
+    public Response create(@MultipartForm UserForm form) {
+        String imageName = "";
 
-        String nomeImagem = "";
         try {
-            nomeImagem = fileService.salvarImagemUsuario(form.getImagem(), form.getNomeImagem());
+            imageName = fileService.saveUserImage(form.getImagem(), form.getImageName());
         } catch (IOException e) {
             Response.ok(e.getMessage(), MediaType.TEXT_PLAIN).status(422).build();
             e.printStackTrace();
         }
-        Usuario entity = new Usuario();
-        entity.nome = form.getNome();
+
+        Users entity = new Users();
+        entity.name = form.getName();
         entity.email = form.getEmail();
-        entity.codArea = form.getCodArea();
-        entity.telefone = form.getTelefone();
-        entity.senha = pService.getHash(form.getSenha());
-        entity.nomeImagem = nomeImagem;
+        entity.password = pService.getHash(form.getPassword());
+        entity.imageName = imageName;
 
         repository.persist(entity);
 
-        return Response.created(URI.create("/usuarios/" + entity.id)).entity(new UsuarioResponseDTO(entity)).build();
+        return Response.created(URI.create("/users/" + entity.id)).entity(new UserResponseDTO(entity)).build();
     }
 
     @PUT
     @Path("/putupload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Transactional
-    public UsuarioResponseDTO update(@MultipartForm UsuarioForm form) {
-        String nomeImagem = "";
+    public UserResponseDTO update(@MultipartForm UserForm form) {
+        String imageName = "";
         try {
-            nomeImagem = fileService.salvarImagemUsuario(form.getImagem(), form.getNomeImagem());
+            imageName = fileService.saveUserImage(form.getImagem(), form.getImageName());
         } catch (IOException e) {
             Response.ok(e.getMessage(), MediaType.TEXT_PLAIN).status(422).build();
             e.printStackTrace();
         }
 
-        Usuario entity = repository.findById(form.getId());
+        Users entity = repository.findById(form.getId());
 
-        entity.nome = form.getNome();
+        entity.name = form.getName();
         entity.email = form.getEmail();
-        entity.codArea = form.getCodArea();
-        entity.telefone = form.getTelefone();
-        entity.senha = pService.getHash(form.getSenha());
-        entity.nomeImagem = nomeImagem;
-        return new UsuarioResponseDTO(entity);
+        entity.password = pService.getHash(form.getPassword());
+        entity.imageName = imageName;
+        return new UserResponseDTO(entity);
     }
 
     @DELETE
     @Path("/{id}")
     @Transactional
     public void delete(@PathParam("id") Long id) {
-        Usuario entity = repository.findById(id);
-        if (entity == null)
+        Users entity = repository.findById(id);
+        if (entity == null){
             throw new NotFoundException();
+        }
+
         repository.delete(entity);
     }
 
@@ -126,12 +124,12 @@ public class UsuarioResource {
     }
 
     @GET
-    @Path("/download/{nomeImagem}")
+    @Path("/download/{imageName}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response downloadImage(@PathParam("nomeImagem") String nomeImagem) {
-        ResponseBuilder response = Response.ok(fileService.download(nomeImagem));
+    public Response downloadImage(@PathParam("imageName") String imageName) {
+        ResponseBuilder response = Response.ok(fileService.download(imageName));
         response.header("Content-Disposition",
-                "attachment;filename=" + nomeImagem);
+                "attachment;filename=" + imageName);
         return response.build();
     }
 }
