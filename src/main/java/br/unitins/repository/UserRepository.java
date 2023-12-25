@@ -34,4 +34,9 @@ public class UserRepository implements PanacheRepository<Users>{
             return null;
         }
     }
+
+    public Users create(Users user) {
+        this.persist(user);
+        return user;
+    }
 }

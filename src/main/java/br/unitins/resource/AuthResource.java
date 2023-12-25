@@ -1,6 +1,9 @@
 package br.unitins.resource;
 
+import java.net.URI;
+
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -10,6 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.unitins.dto.AuthDTO;
+import br.unitins.dto.RegisterDTO;
 import br.unitins.model.Users;
 import br.unitins.repository.UserRepository;
 import br.unitins.service.JwtService;
@@ -17,7 +21,6 @@ import br.unitins.service.PasswordService;
 
 @Path("/auth")
 public class AuthResource {
-
     @Inject
     UserRepository repository;
     
@@ -36,11 +39,30 @@ public class AuthResource {
         Users validUser = repository.findByEmailAndPassword(user.getEmail(), hash);
 
         if (validUser == null){
-            return Response.status(Status.NO_CONTENT).entity("Usuário não encontrado.").build();
-        } else {
-            return Response.ok()
-                .header("Authorization", jwtService.generateJwt(validUser))
+            return Response
+                .status(Status.NO_CONTENT)
+                .entity("Usuário não encontrado.")
                 .build();
+        } else {
+            return Response.ok().header(
+                "Authorization", 
+                jwtService.generateJwt(validUser)
+            ).build();
         }
+    }
+
+    @POST
+    @Path("/register")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response register(RegisterDTO user) {
+        String hash = pService.getHash(user.getPassword());
+        Users validUser = repository.create(user.toUser(hash));
+
+        return Response.created(URI.create("/users/" + validUser.id)).header(
+            "Authorization", 
+            jwtService.generateJwt(validUser)
+        ).build();
     }
 }

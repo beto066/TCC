@@ -7,9 +7,12 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Users extends DefaultEntity {
     public String name; 
     public String email;
