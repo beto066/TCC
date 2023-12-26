@@ -11,6 +11,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 
+import br.unitins.model.enums.Role;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Users extends DefaultEntity {

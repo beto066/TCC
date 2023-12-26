@@ -20,8 +20,9 @@ public class JwtService {
 
         // upn - User Principal Name
         return Jwt.issuer("unitins-jwt")
-                .claim("email", user.email)
+                .claim("id", user.id)
                 .claim("name", user.name)
+                .claim("email", user.email)
                 .upn(user.email)
                 .groups(roles)
                 .expiresAt(duration)

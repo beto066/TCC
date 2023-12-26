@@ -31,7 +31,7 @@ insert into Users(name, email, password, created_at) values ('Vegeta', 'vegeta@g
 -- insert into Endereco(cep, logradouro, numero, id_cidade, id_evento) values ('554444', 'Rua da mangueira', '14',2, 3);
 -- insert into Endereco(cep, logradouro, numero, id_cidade, id_evento) values ('554499', 'Av. do cerjiu', '25', 1, 2);
 
--- insert into Esporte(name, modalidade) values ('Futebol', 'Com os pés');  
+-- insert into Esporte(name, modalidade) values ('Futebol', 'Com os pés');
 -- insert into Esporte(name, modalidade) values ('Volei', 'Com as mãos');
 
 -- insert into Produto(name, quantidade, preco, desconto, descricao, marca,link) values ('camisa', 3, 2.99, 0, 'camisa legal', 'rener','https://mpago.la/1SvZ4W5');
@@ -43,5 +43,5 @@ insert into Users(name, email, password, created_at) values ('Vegeta', 'vegeta@g
 -- insert into evento_esporte(id_envento, id_esporte) values (2, 1);
 -- insert into evento_esporte(id_envento, id_esporte) values (2, 2);
 
-insert into Roles(id_user, role) values (1, 'Admin');
-insert into Roles(id_user, role) values (2, 'User');
+insert into Roles(id_user, role) values (1, 1);
+insert into Roles(id_user, role) values (2, 2);

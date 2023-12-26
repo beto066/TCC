@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response.Status;
 import br.unitins.dto.AuthDTO;
 import br.unitins.dto.RegisterDTO;
 import br.unitins.model.Users;
+import br.unitins.model.enums.Role;
 import br.unitins.repository.UserRepository;
 import br.unitins.service.JwtService;
 import br.unitins.service.PasswordService;
@@ -23,7 +24,7 @@ import br.unitins.service.PasswordService;
 public class AuthResource {
     @Inject
     UserRepository repository;
-    
+
     @Inject
     PasswordService pService;
 
@@ -44,8 +45,9 @@ public class AuthResource {
                 .entity("Usuário não encontrado.")
                 .build();
         } else {
+            System.out.println(jwtService.generateJwt(validUser));
             return Response.ok().header(
-                "Authorization", 
+                "Authorization",
                 jwtService.generateJwt(validUser)
             ).build();
         }
@@ -57,11 +59,19 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response register(RegisterDTO user) {
+        Users validUser;
         String hash = pService.getHash(user.getPassword());
-        Users validUser = repository.create(user.toUser(hash));
+
+        if (user.getType() == Role.THERAPIST.getId()) {
+            validUser = user.toTherapist(hash);
+        } else {
+            validUser = user.toUser(hash);
+        }
+
+        validUser = repository.create(validUser);
 
         return Response.created(URI.create("/users/" + validUser.id)).header(
-            "Authorization", 
+            "Authorization",
             jwtService.generateJwt(validUser)
         ).build();
     }

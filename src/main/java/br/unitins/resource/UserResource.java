@@ -1,16 +1,15 @@
 package br.unitins.resource;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -19,6 +18,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.eclipse.microprofile.jwt.Claim;
+import org.eclipse.microprofile.jwt.Claims;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import br.unitins.dto.UserResponseDTO;
@@ -41,52 +43,35 @@ public class UserResource {
     @Inject
     PasswordService pService;
 
+    // @Inject
+    // private JsonWebToken token;
+
     @GET
+    @RolesAllowed("")
     public List<Users> getAll() {
         return repository.findAllUsers2();
     }
 
     @GET
     @Path("/search/{name}")
+    @RolesAllowed("")
     public List<UserResponseDTO> getListUser(@PathParam("name") String name) {
         return repository.findByName(name);
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed("")
     public UserResponseDTO get(@PathParam("id") Long id) {
+        System.out.println(new UserResponseDTO(repository.findById(id)));
         return new UserResponseDTO(repository.findById(id));
-    }
-
-    @POST
-    @Path("/postupload")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Transactional
-    public Response create(@MultipartForm UserForm form) {
-        String imageName = "";
-
-        try {
-            imageName = fileService.saveUserImage(form.getImagem(), form.getImageName());
-        } catch (IOException e) {
-            Response.ok(e.getMessage(), MediaType.TEXT_PLAIN).status(422).build();
-            e.printStackTrace();
-        }
-
-        Users entity = new Users();
-        entity.name = form.getName();
-        entity.email = form.getEmail();
-        entity.password = pService.getHash(form.getPassword());
-        entity.imageName = imageName;
-
-        repository.persist(entity);
-
-        return Response.created(URI.create("/users/" + entity.id)).entity(new UserResponseDTO(entity)).build();
     }
 
     @PUT
     @Path("/putupload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Transactional
+    @RolesAllowed({"Therapist", "Family", "Network Admin"})
     public UserResponseDTO update(@MultipartForm UserForm form) {
         String imageName = "";
         try {

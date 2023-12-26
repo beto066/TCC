@@ -1,16 +1,24 @@
 package br.unitins.dto;
 
 public class UserDTO {
-
     private String name;
     private String email;
     private String password;
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getName() {
         return name;
     }
 
-    public void setNome(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

@@ -3,7 +3,7 @@ package br.unitins.dto;
 public class AuthDTO {
     private String email;
     private String password;
-   
+
     public String getPassword() {
         return password;
     }
