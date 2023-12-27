@@ -5,9 +5,6 @@ import javax.ws.rs.FormParam;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 public class UserForm {
-    @FormParam("id")
-    private Long id;
-
     @FormParam("name")
     private String name;
 
@@ -62,13 +59,5 @@ public class UserForm {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

@@ -23,8 +23,4 @@ public class PersonResource  {
     public String test() {
         return System.getProperty("user.home");
     }
-   
-    // desabilitando o recurso
-//    @MethodProperties(exposed = false)
-//    boolean delete(Long id);
 }

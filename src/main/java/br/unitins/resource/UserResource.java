@@ -18,8 +18,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import org.eclipse.microprofile.jwt.Claim;
-import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
@@ -27,6 +25,7 @@ import br.unitins.dto.UserResponseDTO;
 import br.unitins.form.UserForm;
 import br.unitins.model.Users;
 import br.unitins.repository.UserRepository;
+import br.unitins.service.EmailService;
 import br.unitins.service.FileService;
 import br.unitins.service.PasswordService;
 
@@ -41,10 +40,10 @@ public class UserResource {
     private FileService fileService;
 
     @Inject
-    PasswordService pService;
+    private PasswordService pService;
 
-    // @Inject
-    // private JsonWebToken token;
+    @Inject
+    private JsonWebToken token;
 
     @GET
     @RolesAllowed("")
@@ -74,27 +73,43 @@ public class UserResource {
     @RolesAllowed({"Therapist", "Family", "Network Admin"})
     public UserResponseDTO update(@MultipartForm UserForm form) {
         String imageName = "";
-        try {
-            imageName = fileService.saveUserImage(form.getImagem(), form.getImageName());
-        } catch (IOException e) {
-            Response.ok(e.getMessage(), MediaType.TEXT_PLAIN).status(422).build();
-            e.printStackTrace();
+
+        if (
+            form.getImageName() != null &&
+            !form.getImageName().isEmpty() &&
+            form.getImagem() != null &&
+            form.getImagem().length > 0
+        ) {
+            try {
+                imageName = fileService.saveUserImage(form.getImagem(), form.getImageName());
+            } catch (IOException e) {
+                Response.ok(e.getMessage(), MediaType.TEXT_PLAIN).status(422).build();
+                e.printStackTrace();
+            }
         }
 
-        Users entity = repository.findById(form.getId());
+        Users entity = repository.findById(token.<Long>getClaim("id"));
 
-        entity.name = form.getName();
-        entity.email = form.getEmail();
-        entity.password = pService.getHash(form.getPassword());
-        entity.imageName = imageName;
+        if (form.getName() != null && form.getPassword().trim().length() >= 2) {
+            entity.name = form.getName();
+        }
+        if (form.getEmail() !=  null && !EmailService.isEmail(form.getEmail())) {
+            entity.email = form.getEmail();
+        }
+        if (form.getPassword() != null && form.getPassword().trim().length() >= 6) {
+            entity.password = pService.getHash(form.getPassword());
+        }
+        if (imageName != null && !imageName.isEmpty()) {
+            entity.imageName = imageName;
+        }
         return new UserResponseDTO(entity);
     }
 
     @DELETE
-    @Path("/{id}")
     @Transactional
-    public void delete(@PathParam("id") Long id) {
-        Users entity = repository.findById(id);
+    @RolesAllowed({"Therapist", "Family", "Network Admin"})
+    public void delete() {
+        Users entity = repository.findById(token.<Long>getClaim("id"));
         if (entity == null){
             throw new NotFoundException();
         }
@@ -104,6 +119,7 @@ public class UserResource {
 
     @GET
     @Path("/count")
+    @RolesAllowed("")
     public Long count() {
         return repository.count();
     }
@@ -111,6 +127,7 @@ public class UserResource {
     @GET
     @Path("/download/{imageName}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @RolesAllowed("")
     public Response downloadImage(@PathParam("imageName") String imageName) {
         ResponseBuilder response = Response.ok(fileService.download(imageName));
         response.header("Content-Disposition",
