@@ -17,7 +17,7 @@ public class UserRepository implements PanacheRepository<Users>{
             .collect(Collectors.toList());
     }
 
-    public  List<Users> findAllUsers2() {
+    public  List<Users> listAllUsers() {
         return listAll();
     }
 
@@ -29,7 +29,7 @@ public class UserRepository implements PanacheRepository<Users>{
 
     public  Users findByEmailAndPassword(String email, String password) {
         try {
-            return find("email = ?1 AND password = ?2", email, password).singleResult(); 
+            return find("email = ?1 AND password = ?2", email, password).singleResult();
         } catch (Exception e) {
             return null;
         }

@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import br.unitins.model.Users;
 import io.smallrye.jwt.build.Jwt;
 
@@ -27,5 +29,9 @@ public class JwtService {
                 .groups(roles)
                 .expiresAt(duration)
                 .sign();
+    }
+
+    public Long getUserId(JsonWebToken token) {
+        return Long.parseLong(token.<Object>getClaim("id").toString());
     }
 }

@@ -27,6 +27,7 @@ import br.unitins.model.Users;
 import br.unitins.repository.UserRepository;
 import br.unitins.service.EmailService;
 import br.unitins.service.FileService;
+import br.unitins.service.JwtService;
 import br.unitins.service.PasswordService;
 
 @Path("/users")
@@ -43,12 +44,15 @@ public class UserResource {
     private PasswordService pService;
 
     @Inject
+    JwtService jwtService;
+
+    @Inject
     private JsonWebToken token;
 
     @GET
-    @RolesAllowed("")
+    @RolesAllowed("Therapist")
     public List<Users> getAll() {
-        return repository.findAllUsers2();
+        return repository.listAllUsers();
     }
 
     @GET
@@ -62,8 +66,14 @@ public class UserResource {
     @Path("/{id}")
     @RolesAllowed("")
     public UserResponseDTO get(@PathParam("id") Long id) {
-        System.out.println(new UserResponseDTO(repository.findById(id)));
         return new UserResponseDTO(repository.findById(id));
+    }
+
+    @GET
+    @Path("/profile")
+    @RolesAllowed({"Therapist", "Family", "Network Admin"})
+    public UserResponseDTO find() {
+        return new UserResponseDTO(repository.findById(jwtService.getUserId(token)));
     }
 
     @PUT
@@ -88,12 +98,12 @@ public class UserResource {
             }
         }
 
-        Users entity = repository.findById(token.<Long>getClaim("id"));
+        Users entity = repository.findById(jwtService.getUserId(token));
 
         if (form.getName() != null && form.getPassword().trim().length() >= 2) {
             entity.name = form.getName();
         }
-        if (form.getEmail() !=  null && !EmailService.isEmail(form.getEmail())) {
+        if (form.getEmail() != null && !form.getEmail().trim().isEmpty() && !EmailService.isEmail(form.getEmail())) {
             entity.email = form.getEmail();
         }
         if (form.getPassword() != null && form.getPassword().trim().length() >= 6) {
@@ -109,7 +119,7 @@ public class UserResource {
     @Transactional
     @RolesAllowed({"Therapist", "Family", "Network Admin"})
     public void delete() {
-        Users entity = repository.findById(token.<Long>getClaim("id"));
+        Users entity = repository.findById(jwtService.getUserId(token));
         if (entity == null){
             throw new NotFoundException();
         }

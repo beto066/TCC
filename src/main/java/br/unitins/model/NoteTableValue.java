@@ -12,13 +12,11 @@ public class NoteTableValue extends DefaultEntity {
     public String label;
     public String value;
 
+    public Boolean active = true;
+
     @ManyToOne
     @JoinColumn(name = "id_therapist")
     public Therapist therapist;
-
-    @ManyToOne
-    @JoinColumn(name = "id_table")
-    public Therapist table;
 
     @OneToMany(mappedBy = "value")
     public List<MappedTableValue> notes;

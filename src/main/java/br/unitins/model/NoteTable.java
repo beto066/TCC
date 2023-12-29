@@ -10,5 +10,5 @@ import javax.persistence.Table;
 @Table(name = "NoteTable")
 public class NoteTable extends Note {
     @OneToMany(mappedBy = "table")
-    public List<NoteTableValue> values;
+    public List<MappedTableValue> values;
 }
