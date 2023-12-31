@@ -1,6 +1,5 @@
 package br.unitins.resource;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -43,20 +42,18 @@ public class NoteTableValueResource {
     JwtService jwtService;
 
     @GET
+    @RolesAllowed("Therapist")
+    public List<NoteTableValueResoponseDTO> getAll() {
+        Long therapist = jwtService.getUserId(token);
+        return repository.findByTherapist(therapist);
+    }
+
+    @GET
     @Path("/search/{search}")
     @RolesAllowed("Therapist")
     public List<NoteTableValueResoponseDTO> search(@PathParam("search") String search) {
         Long therapist = jwtService.getUserId(token);
         return repository.search(search, therapist);
-    }
-
-    @GET
-    @Path("/")
-    @RolesAllowed("Therapist")
-    public List<NoteTableValueResoponseDTO> getAll(@PathParam("hello") String hello) {
-        System.out.println(hello);
-        Long therapist = jwtService.getUserId(token);
-        return repository.findByTherapist(therapist);
     }
 
     @GET
@@ -74,10 +71,8 @@ public class NoteTableValueResource {
 
     @POST
     @RolesAllowed("Therapist")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response store(NoteTableValueDTO dto) {
+    public NoteTableValueResoponseDTO store(NoteTableValueDTO dto) {
         if (!dto.validate()) {
             throw new WebApplicationException(
                 "Payload Error",
@@ -90,14 +85,12 @@ public class NoteTableValueResource {
         value.therapist = (Therapist) uRepository.findById(jwtService.getUserId(token));
         repository.persist(value);
 
-        return Response.created(URI.create("/users/notes/" + value.id)).build();
+        return new NoteTableValueResoponseDTO(value);
     }
 
     @DELETE
     @RolesAllowed("Therapist")
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response delete(@PathParam("id") Long id) {
         Long therapistId = jwtService.getUserId(token);

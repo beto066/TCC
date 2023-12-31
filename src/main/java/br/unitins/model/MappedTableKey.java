@@ -8,8 +8,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 class MappedTableKey implements Serializable {
     @Column(name = "table_id")
-    Long tableId;
+    public Long tableId;
 
     @Column(name = "value_id")
-    Long valueId;
+    public Long valueId;
 }

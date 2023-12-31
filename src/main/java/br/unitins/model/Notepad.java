@@ -1,5 +1,7 @@
 package br.unitins.model;
 
+import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -7,5 +9,5 @@ import javax.persistence.Table;
 @Table(name = "Notepad")
 public class Notepad extends Note {
     public String title;
-    public String body;
+    public ArrayList<String> body;
 }

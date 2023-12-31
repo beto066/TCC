@@ -21,7 +21,7 @@ public class NoteTableValueRepository implements PanacheRepository<NoteTableValu
     public List<NoteTableValueResoponseDTO> search(String search, Long id) {
         StringBuilder query = new StringBuilder();
 
-        query.append("id_therapist = ?1 AND ");
+        query.append("therapist_id = ?1 AND ");
         query.append("active = true AND ");
         query.append("(");
         query.append("  UPPER(value) LIKE ?2 OR ");
@@ -34,7 +34,7 @@ public class NoteTableValueRepository implements PanacheRepository<NoteTableValu
     }
 
     public List<NoteTableValueResoponseDTO> findByTherapist(Long id) {
-        return find("id_therapist = ?1 AND active = true", id).stream()
+        return find("therapist_id = ?1 AND active = true", id).stream()
             .map(value -> new NoteTableValueResoponseDTO(value))
             .collect(Collectors.toList());
     }
@@ -50,7 +50,7 @@ public class NoteTableValueRepository implements PanacheRepository<NoteTableValu
     public NoteTableValue findByIdAndTherapist(Long id, Long therapistId) {
         try {
             return find(
-                "id = ?1 AND id_therapist = ?2 AND active = true",
+                "id = ?1 AND therapist_id = ?2 AND active = true",
                 id,
                 therapistId
             ).singleResult();

@@ -15,7 +15,7 @@ public class NoteTableValue extends DefaultEntity {
     public Boolean active = true;
 
     @ManyToOne
-    @JoinColumn(name = "id_therapist")
+    @JoinColumn(name = "therapist_id")
     public Therapist therapist;
 
     @OneToMany(mappedBy = "value")

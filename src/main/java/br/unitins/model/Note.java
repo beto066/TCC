@@ -15,11 +15,11 @@ import br.unitins.model.enums.NoteType;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Note extends DefaultEntity {
     @ManyToOne
-    @JoinColumn(name = "id_author")
+    @JoinColumn(name = "author_id")
     public Users author;
 
     @ManyToOne
-    @JoinColumn(name = "id_patient")
+    @JoinColumn(name = "patient_id")
     public Patient patient;
 
     @Enumerated(EnumType.ORDINAL)

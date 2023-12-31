@@ -8,6 +8,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -45,7 +46,6 @@ public class AuthResource {
                 .entity("Usuário não encontrado.")
                 .build();
         } else {
-            System.out.println(jwtService.generateJwt(validUser));
             return Response.ok().header(
                 "Authorization",
                 jwtService.generateJwt(validUser)
@@ -59,6 +59,12 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response register(RegisterDTO user) {
+        if (user.validate()) {
+            throw new WebApplicationException(
+                "Payload Error",
+                422
+            );
+        }
         Users validUser;
         String hash = pService.getHash(user.getPassword());
 

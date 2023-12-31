@@ -3,7 +3,7 @@ package br.unitins.model.enums;
 public enum Role {
     THERAPIST(1, "Therapist"),
     FAMILY(2, "Family"),
-    NETWORK_ADMIN(3, "Network Admin");
+    NETWORK_ADMIN(3, "Network_Admin");
 
     private Integer id;
     private String label;

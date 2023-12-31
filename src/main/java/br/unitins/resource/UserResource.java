@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -71,7 +72,7 @@ public class UserResource {
 
     @GET
     @Path("/profile")
-    @RolesAllowed({"Therapist", "Family", "Network Admin"})
+    @RolesAllowed({"Therapist", "Family", "Network_Admin"})
     public UserResponseDTO find() {
         return new UserResponseDTO(repository.findById(jwtService.getUserId(token)));
     }
@@ -80,7 +81,7 @@ public class UserResource {
     @Path("/putupload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Transactional
-    @RolesAllowed({"Therapist", "Family", "Network Admin"})
+    @RolesAllowed({"Therapist", "Family", "Network_Admin"})
     public UserResponseDTO update(@MultipartForm UserForm form) {
         String imageName = "";
 
@@ -100,13 +101,31 @@ public class UserResource {
 
         Users entity = repository.findById(jwtService.getUserId(token));
 
-        if (form.getName() != null && form.getPassword().trim().length() >= 2) {
+        if (form.getName() != null) {
+            if (form.getName().trim().length() < 4 || form.getName().trim().length() > 30) {
+                throw new WebApplicationException(
+                    "the field name must be greater than 4 and less than 30",
+                    422
+                );
+            }
             entity.name = form.getName();
         }
-        if (form.getEmail() != null && !form.getEmail().trim().isEmpty() && !EmailService.isEmail(form.getEmail())) {
+        if (form.getEmail() != null) {
+            if (!EmailService.isEmail(form.getEmail())) {
+                throw new WebApplicationException(
+                    "the field email must be an email",
+                    422
+                );
+            }
             entity.email = form.getEmail();
         }
         if (form.getPassword() != null && form.getPassword().trim().length() >= 6) {
+            if (form.getPassword().trim().length() < 6) {
+                throw new WebApplicationException(
+                    "the field password must be greater than 4",
+                    422
+                );
+            }
             entity.password = pService.getHash(form.getPassword());
         }
         if (imageName != null && !imageName.isEmpty()) {
@@ -117,7 +136,7 @@ public class UserResource {
 
     @DELETE
     @Transactional
-    @RolesAllowed({"Therapist", "Family", "Network Admin"})
+    @RolesAllowed({"Therapist", "Family", "Network_Admin"})
     public void delete() {
         Users entity = repository.findById(jwtService.getUserId(token));
         if (entity == null){
