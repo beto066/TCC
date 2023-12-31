@@ -71,7 +71,7 @@ public class AuthResource {
         if (user.getType() == Role.THERAPIST.getId()) {
             validUser = user.toTherapist(hash);
         } else {
-            validUser = user.toUser(hash);
+            validUser = user.toFamily(hash);
         }
 
         validUser = repository.create(validUser);

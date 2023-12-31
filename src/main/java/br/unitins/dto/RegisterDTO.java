@@ -3,6 +3,7 @@ package br.unitins.dto;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
 
+import br.unitins.model.Family;
 import br.unitins.model.Therapist;
 import br.unitins.model.Users;
 import br.unitins.model.enums.Role;
@@ -34,6 +35,16 @@ public class RegisterDTO {
         return therapist;
     }
 
+    public Family toFamily(String hash) {
+        Family family = new Family();
+        family.name = this.name;
+        family.email = this.email;
+        family.password = hash;
+        family.roles.add(Role.FAMILY);
+
+        return family;
+    }
+
     public boolean validate() {
         if (name == null || name.trim().length() < 4 || name.trim().length() > 30) {
             throw new WebApplicationException(
@@ -58,12 +69,6 @@ public class RegisterDTO {
         }
         return true;
     }
-
-    // public Therapist toFamily(String hash) {
-    //     Therapist therapist = new Therapist();
-
-    //     return therapist;
-    // }
 
     public String getPassword() {
         return password;
