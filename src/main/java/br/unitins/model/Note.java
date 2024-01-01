@@ -10,10 +10,11 @@ import javax.persistence.ManyToOne;
 
 import br.unitins.model.enums.DifficultyLevel;
 import br.unitins.model.enums.NoteType;
+import br.unitins.model.enums.Program;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Note extends DefaultEntity {
+public abstract class Note extends DefaultEntity {
     @ManyToOne
     @JoinColumn(name = "author_id")
     public Users author;
@@ -23,7 +24,7 @@ public class Note extends DefaultEntity {
     public Patient patient;
 
     @Enumerated(EnumType.ORDINAL)
-    public NoteType programs;
+    public Program program;
 
     @Enumerated(EnumType.ORDINAL)
     public NoteType type;

@@ -28,7 +28,7 @@ import br.unitins.repository.NoteTableValueRepository;
 import br.unitins.repository.UserRepository;
 import br.unitins.service.JwtService;
 
-@Path("/users/notes")
+@Path("/users/notes/values")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class NoteTableValueResource {
