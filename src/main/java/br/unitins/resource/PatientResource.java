@@ -24,11 +24,13 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import br.unitins.dto.NoteResponseDTO;
 import br.unitins.dto.NoteTableResponseDTO;
+import br.unitins.dto.NoteTrainingResponseDTO;
 import br.unitins.dto.NotepadResponseDTO;
 import br.unitins.dto.PatientDTO;
 import br.unitins.dto.PatientResponseDTO;
 import br.unitins.model.Family;
 import br.unitins.model.NoteTable;
+import br.unitins.model.NoteTraining;
 import br.unitins.model.Notepad;
 import br.unitins.model.Patient;
 import br.unitins.model.Therapist;
@@ -57,7 +59,6 @@ public class PatientResource {
     @GET
     @RolesAllowed("Therapist")
     public List<PatientResponseDTO> getAll() {
-        System.out.println(jwtService.getUserId(token));
         TherapistRepository uRepository = new TherapistRepository();
         Therapist therapist = uRepository.findById(jwtService.getUserId(token));
 
@@ -89,7 +90,7 @@ public class PatientResource {
                 return new NotepadResponseDTO((Notepad) n);
             }
             if (n.type.getId() == NoteType.NOTETRAINING.getId()) {
-                throw new NotFoundException();
+            return new NoteTrainingResponseDTO((NoteTraining) n);
             }
             throw new NotFoundException();
         }).collect(Collectors.toList());
@@ -136,6 +137,7 @@ public class PatientResource {
         TherapistRepository tRepository = new TherapistRepository();
         Therapist therapist = tRepository.findById(jwtService.getUserId(token));
         Patient patient = repository.findById(id);
+
         int index = therapist.patients.indexOf(patient);
         therapist.patients.remove(index);
 

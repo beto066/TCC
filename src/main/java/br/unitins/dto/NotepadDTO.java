@@ -7,6 +7,7 @@ public class NotepadDTO {
     private Integer program;
     private Integer level;
     private String title;
+    private Boolean visibilityForFamily;
     private ArrayList<String> body;
 
     public Long getPatientId() {
@@ -39,6 +40,14 @@ public class NotepadDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Boolean getVisibilityForFamily() {
+        return visibilityForFamily;
+    }
+
+    public void setVisibilityForFamily(Boolean visibilityForFamily) {
+        this.visibilityForFamily = visibilityForFamily;
     }
 
     public ArrayList<String> getBody() {

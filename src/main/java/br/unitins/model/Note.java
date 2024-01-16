@@ -15,6 +15,8 @@ import br.unitins.model.enums.Program;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Note extends DefaultEntity {
+    public Boolean visibilityForFamily;
+
     @ManyToOne
     @JoinColumn(name = "author_id")
     public Users author;

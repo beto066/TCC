@@ -7,6 +7,7 @@ public class NoteTableDTO {
     private Long patientId;
     private Integer program;
     private Integer level;
+    private Boolean visibilityForFamily;
     private List<MappedTableValueDTO> values;
 
     public Long getPatientId() {
@@ -31,6 +32,14 @@ public class NoteTableDTO {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public Boolean getVisibilityForFamily() {
+        return visibilityForFamily;
+    }
+
+    public void setVisibilityForFamily(Boolean visibilityForFamily) {
+        this.visibilityForFamily = visibilityForFamily;
     }
 
     public List<MappedTableValueDTO> getValues() {

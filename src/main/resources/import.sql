@@ -5,6 +5,13 @@ INSERT INTO Users(name, email, password, created_at) VALUES ('The rock', 'theroc
 INSERT INTO Therapist(id) VALUES (1);
 INSERT INTO Therapist(id) VALUES (3);
 
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('SU', 'SUCCES', true, 1);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('ST', 'Succes with tip', true, 1);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('ER', 'Error', true, 1);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('SU', 'SUCCES', true, 3);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('ST', 'Succes with tip', true, 3);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('ER', 'Error', true, 3);
+
 INSERT INTO Patient(birth, name, tratment_started_at, created_at) VALUES ('10-18-2022', 'jose', '10-18-2023', '10-18-2023');
 INSERT INTO Patient(birth, name, tratment_started_at, created_at) VALUES ('10-18-2022', 'joilson', '10-18-2023', '10-18-2023');
 INSERT INTO Patient(birth, name, tratment_started_at, created_at) VALUES ('10-18-2022', 'josue', '10-18-2023', '10-18-2023');
