@@ -19,9 +19,9 @@ public class PasswordService {
             byte[] result = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512")
                 .generateSecret(
                     new PBEKeySpec(
-                        password.toString().toCharArray(), 
-                        salt.getBytes(), 
-                        iterationCount, 
+                        password.toString().toCharArray(),
+                        salt.getBytes(),
+                        iterationCount,
                         keylength
                     )
                 )
