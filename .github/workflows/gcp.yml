@@ -19,15 +19,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn clean package
-
     - name: Add environments
       run: |
         echo "repository variable : $DATABASE_USERNAME"
@@ -41,6 +32,14 @@ jobs:
         DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
         DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         DOCKER_HUB_PUSH: ${{ secrets.DOCKER_HUB_PUSH }}
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn clean package
 
     - name: Set up Google Cloud SDK
       uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0.2.0
