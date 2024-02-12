@@ -36,7 +36,7 @@ public class AuthResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response login(AuthDTO user) {
+    public Response login(@Valid AuthDTO user) {
         String hash = pService.getHash(user.getPassword());
 
         Users validUser = repository.findByEmailAndPassword(user.getEmail(), hash);

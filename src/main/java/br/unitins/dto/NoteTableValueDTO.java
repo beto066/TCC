@@ -1,16 +1,16 @@
 package br.unitins.dto;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import br.unitins.model.NoteTableValue;
 
 public class NoteTableValueDTO {
-    @Max(message = "O campo label deve ser menor ou igual a 2", value = 2)
+    @Size(message = "O campo label deve ser menor ou igual a 2", max = 2)
     @NotBlank(message = "O campo label é obrigatório")
     private String label;
 
-    @Max(message = "O campo value deve ser menor ou igual a 10", value = 10)
+    @Size(message = "O campo value deve ser menor ou igual a 10", max = 10)
     @NotBlank(message = "O campo value é obrigatório")
     private String value;
 

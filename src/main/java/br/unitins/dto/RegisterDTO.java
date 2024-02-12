@@ -1,8 +1,7 @@
 package br.unitins.dto;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import br.unitins.model.Family;
 import br.unitins.model.Therapist;
@@ -11,14 +10,13 @@ import br.unitins.model.enums.Role;
 import br.unitins.model.enums.TrainingResult;
 
 public class RegisterDTO {
-    @Min(message = "O campo name não pode ser menor que 4", value = 4)
-    @Max(message = "O campo name não pode ser maior que 30", value = 30)
+    @Size(message = "Campo name deve ser entre 4 e 30", min = 4, max = 30)
     private String name;
 
     @Email(message = "Insira um email válido")
     private String email;
 
-    @Min(message = "O campo senha deve ser maior ou igual à 6", value = 6)
+    @Size(min = 6, max = 30)
     private String password;
     private Integer type;
 
