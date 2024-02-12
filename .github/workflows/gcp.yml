@@ -33,7 +33,7 @@ jobs:
         DOCKER_HUB_USERNAME: ${{ vars.DOCKER_HUB_USERNAME }}
         DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         DOCKER_HUB_PUSH: ${{ secrets.DOCKER_HUB_PUSH }}
-      run: mvn clean package | ls
+      run: mvn clean package
 
     - name: Set up Google Cloud SDK
       uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0.2.0
@@ -44,7 +44,7 @@ jobs:
 
     - name: Configure Docker to use GCR
       run: |
-        gcloud auth configure-docker gcr.io
+        gcloud auth configure-docker gcr.io | ls
 
     - name: Deploy to GKE
       run: |
