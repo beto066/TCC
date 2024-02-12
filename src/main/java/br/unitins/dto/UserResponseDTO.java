@@ -6,8 +6,6 @@ public class UserResponseDTO {
     private Long id;
     private String name;
     private String email;
-    // private String codArea;
-    // private String telefone;
     private String password;
     private String imageName;
 
@@ -16,8 +14,6 @@ public class UserResponseDTO {
         this.name = user.name;
         this.email = user.email;
         this.password = user.password;
-        // this.codArea = user.codArea;
-        // this.telefone = user.telefone;
         this.imageName = user.imageName;
     }
 

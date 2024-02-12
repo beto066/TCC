@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -84,15 +85,26 @@ public class NoteResource {
         PatientRepository patRepository = new PatientRepository();
         TherapistRepository thRepository = new TherapistRepository();
         NoteTableValueRepository vRepository = new NoteTableValueRepository();
+        Program program = Program.valueOf(dto.getProgram());
+
+        if (program == null) {
+            throw new NotFoundException();
+        }
+
+        DifficultyLevel level = DifficultyLevel.valueOf(dto.getLevel());
+
+        if (level == null) {
+            throw new NotFoundException();
+        }
 
         Patient patient = patRepository.findById(dto.getPatientId());
         NoteTable note = new NoteTable();
 
         note.author = thRepository.findById(jwtService.getUserId(token));
         note.patient = patient;
-        note.program = Program.valueOf(dto.getProgram());
+        note.program = program;
         note.type = NoteType.NOTETABLE;
-        note.level = DifficultyLevel.valueOf(dto.getLevel());
+        note.level = level;
 
         repository.persist(note);
 
@@ -110,15 +122,26 @@ public class NoteResource {
     public NoteTrainingResponseDTO createNoteTraining(NoteTrainingDTO dto) {
         PatientRepository patRepository = new PatientRepository();
         TherapistRepository thRepository = new TherapistRepository();
+        Program program = Program.valueOf(dto.getProgram());
+
+        if (program == null) {
+            throw new NotFoundException();
+        }
+
+        DifficultyLevel level = DifficultyLevel.valueOf(dto.getLevel());
+
+        if (level == null) {
+            throw new NotFoundException();
+        }
 
         Patient patient = patRepository.findById(dto.getPatientId());
         NoteTraining note = new NoteTraining();
 
         note.author = thRepository.findById(jwtService.getUserId(token));
         note.patient = patient;
-        note.program = Program.valueOf(dto.getProgram());
+        note.program = program;
         note.type = NoteType.NOTETRAINING;
-        note.level = DifficultyLevel.valueOf(dto.getLevel());
+        note.level = level;
 
         repository.persist(note);
 
@@ -133,18 +156,29 @@ public class NoteResource {
     @Path("/pad")
     @RolesAllowed({"Therapist", "Family"})
     @Transactional
-    public NotepadResponseDTO createNotepad(NotepadDTO dto) {
+    public NotepadResponseDTO createNotepad(@Valid NotepadDTO dto) {
         PatientRepository patRepository = new PatientRepository();
         UserRepository uRepository = new UserRepository();
+        Program program = Program.valueOf(dto.getProgram());
+
+        if (program == null) {
+            throw new NotFoundException();
+        }
+
+        DifficultyLevel level = DifficultyLevel.valueOf(dto.getLevel());
+
+        if (level == null) {
+            throw new NotFoundException();
+        }
 
         Patient patient = patRepository.findById(dto.getPatientId());
         Notepad note = new Notepad();
 
         note.author = uRepository.findById(jwtService.getUserId(token));
         note.patient = patient;
-        note.program = Program.valueOf(dto.getProgram());
+        note.program = program;
         note.type = NoteType.NOTEPAD;
-        note.level = DifficultyLevel.valueOf(dto.getLevel());
+        note.level = level;
         note.title = dto.getTitle();
         note.body = dto.getBody();
 
@@ -157,7 +191,7 @@ public class NoteResource {
     @Path("/{id}")
     @RolesAllowed({"Therapist", "Family"})
     @Transactional
-    public Response update(@PathParam("id") Long id, NoteResumeDTO dto) {
+    public Response update(@PathParam("id") Long id, @Valid NoteResumeDTO dto) {
         NoteTableValueRepository vRepository = new NoteTableValueRepository();
 
         Note note = repository.findById(id);

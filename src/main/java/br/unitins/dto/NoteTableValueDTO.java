@@ -1,11 +1,17 @@
 package br.unitins.dto;
 
-import javax.ws.rs.WebApplicationException;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 
 import br.unitins.model.NoteTableValue;
 
 public class NoteTableValueDTO {
+    @Max(message = "O campo label deve ser menor ou igual a 2", value = 2)
+    @NotBlank(message = "O campo label é obrigatório")
     private String label;
+
+    @Max(message = "O campo value deve ser menor ou igual a 10", value = 10)
+    @NotBlank(message = "O campo value é obrigatório")
     private String value;
 
     public NoteTableValue toNoteTableValue() {
@@ -14,25 +20,6 @@ public class NoteTableValueDTO {
         value.label = this.label.toUpperCase();
         value.value = this.value;
         return value;
-    }
-
-    public boolean validate() {
-        boolean result = true;
-        if (label == null || label.trim().length() > 2 || label.trim().isEmpty()) {
-            throw new WebApplicationException(
-                "The field label is required with a size less than 2",
-                422
-            );
-        }
-
-        if (value == null || value.trim().length() > 10 || value.trim().isEmpty()) {
-            throw new WebApplicationException(
-                "The field label is required with a size less than 10",
-                422
-            );
-        }
-
-        return result;
     }
 
     public String getValue() {

@@ -4,11 +4,12 @@ import java.net.URI;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -58,20 +59,16 @@ public class AuthResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response register(RegisterDTO user) {
-        if (user.validate()) {
-            throw new WebApplicationException(
-                "Payload Error",
-                422
-            );
-        }
+    public Response register(@Valid RegisterDTO user) {
         Users validUser;
         String hash = pService.getHash(user.getPassword());
 
         if (user.getType() == Role.THERAPIST.getId()) {
             validUser = user.toTherapist(hash);
-        } else {
+        } else if (user.getType() == Role.FAMILY.getId()) {
             validUser = user.toFamily(hash);
+        } else {
+            throw new NotFoundException();
         }
 
         validUser = repository.create(validUser);

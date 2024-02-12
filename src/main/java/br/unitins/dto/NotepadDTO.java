@@ -2,13 +2,24 @@ package br.unitins.dto;
 
 import java.util.ArrayList;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 public class NotepadDTO {
     private Long patientId;
     private Integer program;
     private Integer level;
-    private String title;
     private Boolean visibilityForFamily;
+
+    @Valid
+    @Min(message = "Campo title não pode ser menor que 2", value = 2)
+    @Max(message = "Campo title não pode ser menor que 20", value = 30)
     private ArrayList<String> body;
+
+    @Min(message = "Campo title não pode ser menor que 2", value = 2)
+    @Max(message = "Campo title não pode ser menor que 20", value = 10)
+    private String title;
 
     public Long getPatientId() {
         return patientId;

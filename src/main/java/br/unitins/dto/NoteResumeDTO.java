@@ -3,7 +3,14 @@ package br.unitins.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 public class NoteResumeDTO {
+    @Valid
+    @Min(message = "Campo title não pode ser menor que 2", value = 2)
+    @Max(message = "Campo title não pode ser menor que 20", value = 30)
     private ArrayList<String> body;
     private List<MappedTableValueDTO> values;
     private Boolean visibilityForFamily;
