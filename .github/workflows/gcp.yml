@@ -21,9 +21,12 @@ jobs:
     - uses: actions/checkout@v3
     - name: Add environments
       run: |
-        echo "repository variable : $DATABASE_USERNAME"
-        echo "organization variable : $DATABASE_PASSWORD"
-        echo "overridden variable : $DATABASE_URL"
+        echo "database username variable : $DATABASE_USERNAME"
+        echo "database password variable : $DATABASE_PASSWORD"
+        echo "database url variable : $DATABASE_URL"
+        echo "docker username : $DOCKER_HUB_USERNAME"
+        echo "docker password : $DOCKER_HUB_PASSWORD"
+        echo "docker push : $DOCKER_HUB_PUSH"
         echo "variable from shell environment : $env_var"
       env: 
         DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
