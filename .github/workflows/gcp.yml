@@ -30,7 +30,7 @@ jobs:
         DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
         DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        DOCKER_HUB_USERNAME: ${{ vars.DOCKER_HUB_USERNAME }}
+        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
         DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         DOCKER_HUB_PUSH: ${{ secrets.DOCKER_HUB_PUSH }}
       run: mvn clean package
