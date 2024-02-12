@@ -48,4 +48,4 @@ jobs:
 
     - name: Deploy to GKE
       run: |
-        kubectl apply -f ./target/kubernetes/kubernetes.yaml
+        ls | kubectl apply -f ./target/kubernetes/kubernetes.yaml
