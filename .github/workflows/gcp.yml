@@ -19,22 +19,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Add environments
-      run: |
-        echo "database username variable : $DATABASE_USERNAME"
-        echo "database password variable : $DATABASE_PASSWORD"
-        echo "database url variable : $DATABASE_URL"
-        echo "docker username : $DOCKER_HUB_USERNAME"
-        echo "docker password : $DOCKER_HUB_PASSWORD"
-        echo "docker push : $DOCKER_HUB_PUSH"
-        echo "variable from shell environment : $env_var"
-      env: 
-        DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        DOCKER_HUB_USERNAME: ${{ vars.DOCKER_HUB_USERNAME }}
-        DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        DOCKER_HUB_PUSH: ${{ secrets.DOCKER_HUB_PUSH }}
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
@@ -42,6 +26,13 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
+      env: 
+        DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        DOCKER_HUB_USERNAME: ${{ vars.DOCKER_HUB_USERNAME }}
+        DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        DOCKER_HUB_PUSH: ${{ secrets.DOCKER_HUB_PUSH }}
       run: mvn clean package
 
     - name: Set up Google Cloud SDK
