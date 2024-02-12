@@ -44,8 +44,8 @@ jobs:
 
     - name: Configure Docker to use GCR
       run: |
-        gcloud auth configure-docker gcr.io | ls /target/kubernetes/
+        gcloud auth configure-docker gcr.io
 
     - name: Deploy to GKE
       run: |
-        kubectl apply -f /target/kubernetes/kubernetes.yaml
+        kubectl apply -f ./target/kubernetes/kubernetes.yaml
