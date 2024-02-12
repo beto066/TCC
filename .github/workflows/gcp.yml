@@ -29,6 +29,11 @@ jobs:
       run: mvn clean package
 
     - name: Add environments
+      run: |
+        echo "repository variable : $DATABASE_USERNAME"
+        echo "organization variable : $DATABASE_PASSWORD"
+        echo "overridden variable : $DATABASE_URL"
+        echo "variable from shell environment : $env_var"
       env: 
         DATABASE_USERNAME: ${{ secret.DATABASE_USERNAME }}
         DATABASE_PASSWORD: ${{ secret.DATABASE_PASSWORD }}
