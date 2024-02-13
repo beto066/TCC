@@ -44,7 +44,7 @@ jobs:
 
     - name: Configure Docker to use GCR
       run: |
-        gcloud auth configure-docker gcr.io && gcloud container clusters get-credentials ${{GCP_CLUSTER_NAME}} --region ${{GCP_CLUSTER_REGION}} --project ${{ secrets.GCP_PROJECT_ID }}
+        gcloud auth configure-docker gcr.io && gcloud container clusters get-credentials ${{ secrets.GCP_CLUSTER_NAME }} --region ${{ secrets.GCP_CLUSTER_REGION }} --project ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Deploy to GKE
       run: |
