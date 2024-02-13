@@ -56,5 +56,5 @@ jobs:
 
     - name: Expose kubernets
       run: |
-        kubectl delete services tcc-repository-exposed --ignore-not-found=false && kubectl expose deployment tcc-repository --type=LoadBalancer --name=tcc-repository-exposed --external-ip='34.151.217.238'
+        kubectl delete services {{ secrets.GCP_EXPOSED_NAME }} --ignore-not-found=true && kubectl expose deployment ${{ secrets.GCP_PROJECT_ID }} --type=LoadBalancer --name={{ secrets.GCP_EXPOSED_NAME }} --external-ip='${{ secrets.GCP_EXTERNAL_IP }}'
 
