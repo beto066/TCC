@@ -54,6 +54,3 @@ jobs:
       run: |
         kubectl apply -f ./target/kubernetes/kubernetes.yml
 
-    - name: Expose GKE
-      run: |
-        kubectl delete service ${{ secrets.GCP_EXPOSED_NAME }} && kubectl expose deployment ${{ secrets.GCP_PROJECT_ID }} --type=LoadBalancer --name={{ secrets.GCP_EXPOSED_NAME }}
