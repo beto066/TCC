@@ -47,7 +47,7 @@ public class AuthResource {
                 .entity("Usuário não encontrado.")
                 .build();
         } else {
-            return Response.ok().header(
+            return Response.noContent().header(
                 "Authorization",
                 jwtService.generateJwt(validUser)
             ).build();
