@@ -54,3 +54,7 @@ jobs:
       run: |
         kubectl apply -f ./target/kubernetes/kubernetes.yml
 
+    -name: expose
+      run: |
+        kubectl delete services tcc-repository-exposed --ignore-not-found=false && kubectl expose deployment tcc-repository --type=LoadBalancer --name=tcc-repository-exposed --external-ip='34.151.217.238'
+
