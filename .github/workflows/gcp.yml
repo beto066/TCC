@@ -44,6 +44,11 @@ jobs:
       run: |
         gcloud auth configure-docker gcr.io
 
+    - name: 'Use gcloud CLI'
+      run: 'gcloud auth list --filter=status:ACTIVE --format="value(account)"'
+      # service-account-1@my-project.iam.gserviceaccount.com
+
+
     - name: Set up Google Cloud SDK
       uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0.2.0
       with:
