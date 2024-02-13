@@ -56,5 +56,5 @@ jobs:
 
     - name: Expose kubernets
       run: |
-        kubectl delete services {{ secrets.GCP_EXPOSED_NAME }} --ignore-not-found=true && kubectl expose deployment ${{ secrets.GCP_PROJECT_ID }} --type=LoadBalancer --name={{ secrets.GCP_EXPOSED_NAME }} --external-ip='${{ secrets.GCP_EXTERNAL_IP }}'
+        kubectl delete services {{ secrets.GCP_EXPOSED_NAME }} --ignore-not-found=${{ vars.GCP_IGNORE_NOT_FOUND }} && kubectl expose deployment ${{ secrets.GCP_PROJECT_ID }} --type=LoadBalancer --name={{ secrets.GCP_EXPOSED_NAME }} --external-ip='${{ secrets.GCP_EXTERNAL_IP }}'
 
