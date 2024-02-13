@@ -44,7 +44,7 @@ jobs:
 
     - name: Resolve GCP container
       run: |
-         sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin && gcloud container clusters get-credentials ${{ secrets.GCP_CLUSTER_NAME }} --region ${{ secrets.GCP_CLUSTER_REGION }} --project ${{ secrets.GCP_PROJECT_ID }}
+        sudo ./google-cloud-sdk/bin/gcloud init && sudo ./google-cloud-sdk/install.sh && sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin && gcloud container clusters get-credentials ${{ secrets.GCP_CLUSTER_NAME }} --region ${{ secrets.GCP_CLUSTER_REGION }} --project ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Configure Docker to use GCR
       run: |
