@@ -2,7 +2,7 @@ package br.unitins.dto;
 
 import java.util.ArrayList;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 
 public class NotepadDTO {
     private Long patientId;

@@ -3,7 +3,7 @@ package br.unitins.service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 

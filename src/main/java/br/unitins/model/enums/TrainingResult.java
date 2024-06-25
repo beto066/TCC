@@ -7,8 +7,8 @@ import br.unitins.model.NoteTableValue;
 import br.unitins.model.Therapist;
 
 public enum TrainingResult {
-    SUCCES(1, "SC", "Succes"),
-    SUCCES_WITH_TIP(2, "ST", "Succes with tip"),
+    SUCCESS(1, "SC", "Success"),
+    SUCCESS_WITH_TIP(2, "ST", "Success with tip"),
     ERROR(3, "ER", "Error");
 
     private Integer id;

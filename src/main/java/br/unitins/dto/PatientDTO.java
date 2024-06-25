@@ -2,9 +2,9 @@ package br.unitins.dto;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 
 import br.unitins.model.Patient;
 import br.unitins.validation.AfterDate;

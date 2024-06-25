@@ -3,8 +3,8 @@ package br.unitins.model.enums;
 public enum DifficultyLevel{
     MASS_TRAINING(1, "Mass training"),
     DISTRACT_PHASE(2, "Distract phase"),
-    EXTENDED_TRAINING(3, "Extended trainig"),
-    RANDOM_ROTATION(4, "Random Rotation");
+    EXTENDED_TRAINING(3, "Extended training"),
+    RANDOM_ROTATION(4, "Random rotation");
 
     private Integer id;
     private String label;

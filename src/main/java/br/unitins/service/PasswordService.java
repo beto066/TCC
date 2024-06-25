@@ -4,9 +4,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.inject.Singleton;
+import jakarta.crypto.SecretKeyFactory;
+import jakarta.crypto.spec.PBEKeySpec;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class PasswordService {

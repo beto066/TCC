@@ -3,7 +3,7 @@ package br.unitins.repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import br.unitins.dto.UserResponseDTO;
 import br.unitins.model.Users;

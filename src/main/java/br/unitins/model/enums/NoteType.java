@@ -2,8 +2,8 @@ package br.unitins.model.enums;
 
 public enum NoteType {
     NOTEPAD(1, "Notepad"),
-    NOTETABLE(2, "table"),
-    NOTETRAINING(3 ,"training");
+    NOTETABLE(2, "Table"),
+    NOTETRAINING(3 ,"Training");
 
     private Integer id;
     private String label;

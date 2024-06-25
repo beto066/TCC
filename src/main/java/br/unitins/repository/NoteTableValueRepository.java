@@ -3,8 +3,8 @@ package br.unitins.repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.persistence.NoResultException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.NoResultException;
 
 import br.unitins.dto.NoteTableValueResoponseDTO;
 import br.unitins.model.NoteTableValue;
