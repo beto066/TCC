@@ -1,6 +1,6 @@
 package br.unitins.dto;
 
-import br.unitins.model.Users;
+import br.unitins.model.User;
 
 public class UserResponseDTO {
     private Long id;
@@ -9,7 +9,7 @@ public class UserResponseDTO {
     private String password;
     private String imageName;
 
-    public UserResponseDTO(Users user) {
+    public UserResponseDTO(User user) {
         this.id = user.id;
         this.name = user.name;
         this.email = user.email;

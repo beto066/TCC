@@ -19,7 +19,7 @@ public abstract class Note extends DefaultEntity {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    public Users author;
+    public User author;
 
     @ManyToOne
     @JoinColumn(name = "patient_id")

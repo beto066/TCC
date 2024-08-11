@@ -1,4 +1,4 @@
-package br.unitins.service;
+package br.unitins.service.utils;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -7,12 +7,12 @@ import jakarta.inject.Singleton;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-import br.unitins.model.Users;
+import br.unitins.model.User;
 import io.smallrye.jwt.build.Jwt;
 
 @Singleton
 public class JwtService {
-    public String generateJwt(Users user) {
+    public String generateJwt(User user) {
         Set<String> roles = user.roles
                 .stream().map(r -> r.getLabel())
                 .collect(Collectors.toSet());

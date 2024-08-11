@@ -13,12 +13,13 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-
+import jakarta.persistence.Table;
 import br.unitins.model.enums.Role;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Users extends DefaultEntity {
+@Table(name = "users")
+public class User extends DefaultEntity {
     public String name;
     public String email;
     public String password;

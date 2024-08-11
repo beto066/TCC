@@ -16,7 +16,7 @@ import br.unitins.dto.TherapistResumeResponseDTO;
 import br.unitins.model.Patient;
 import br.unitins.repository.PatientRepository;
 import br.unitins.repository.TherapistRepository;
-import br.unitins.service.JwtService;
+import br.unitins.service.utils.JwtService;
 
 @Path("/therapists")
 @Produces(MediaType.APPLICATION_JSON)

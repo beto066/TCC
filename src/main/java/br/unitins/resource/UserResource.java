@@ -1,6 +1,5 @@
 package br.unitins.resource;
 
-import java.io.IOException;
 import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -9,27 +8,24 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
+import jakarta.ws.rs.core.Response.Status;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import br.unitins.dto.UserResponseDTO;
 import br.unitins.form.UserForm;
-import br.unitins.model.Users;
 import br.unitins.repository.UserRepository;
-import br.unitins.service.EmailService;
-import br.unitins.service.FileService;
-import br.unitins.service.JwtService;
-import br.unitins.service.PasswordService;
+import br.unitins.service.interfaces.UserService;
+import br.unitins.service.utils.FileService;
+import br.unitins.service.utils.JwtService;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -42,39 +38,41 @@ public class UserResource {
     private FileService fileService;
 
     @Inject
-    private PasswordService pService;
-
-    @Inject
     JwtService jwtService;
 
     @Inject
     private JsonWebToken token;
 
+    @Inject
+    private UserService service;
+
     @GET
-    @RolesAllowed("Therapist")
-    public List<Users> getAll() {
-        return repository.listAllUsers();
+    @RolesAllowed({})
+    public List<UserResponseDTO> getAll() {
+        return service.getAll();
     }
 
     @GET
     @Path("/search/{name}")
-    @RolesAllowed("")
+    @RolesAllowed({})
     public List<UserResponseDTO> getListUser(@PathParam("name") String name) {
-        return repository.findByName(name);
+        return service.getListUser(name);
     }
 
     @GET
     @Path("/{id}")
-    @RolesAllowed("")
+    @RolesAllowed({})
     public UserResponseDTO get(@PathParam("id") Long id) {
-        return new UserResponseDTO(repository.findById(id));
+        return service.find(id);
     }
 
     @GET
     @Path("/profile")
     @RolesAllowed({"Therapist", "Family", "Network_Admin"})
     public UserResponseDTO find() {
-        return new UserResponseDTO(repository.findById(jwtService.getUserId(token)));
+        Long userId = jwtService.getUserId(token);
+
+        return service.find(userId);
     }
 
     @PUT
@@ -83,72 +81,28 @@ public class UserResource {
     @Transactional
     @RolesAllowed({"Therapist", "Family", "Network_Admin"})
     public UserResponseDTO update(@MultipartForm UserForm form) {
-        String imageName = "";
+        Long userId = jwtService.getUserId(token);
 
-        if (
-            form.getImageName() != null &&
-            !form.getImageName().isEmpty() &&
-            form.getImagem() != null &&
-            form.getImagem().length > 0
-        ) {
-            try {
-                imageName = fileService.saveUserImage(form.getImagem(), form.getImageName());
-            } catch (IOException e) {
-                Response.ok(e.getMessage(), MediaType.TEXT_PLAIN).status(422).build();
-                e.printStackTrace();
-            }
-        }
-
-        Users entity = repository.findById(jwtService.getUserId(token));
-
-        if (form.getName() != null) {
-            if (form.getName().trim().length() < 4 || form.getName().trim().length() > 30) {
-                throw new WebApplicationException(
-                    "the field name must be greater than 4 and less than 30",
-                    422
-                );
-            }
-            entity.name = form.getName();
-        }
-        if (form.getEmail() != null) {
-            if (!EmailService.isEmail(form.getEmail())) {
-                throw new WebApplicationException(
-                    "the field email must be an email",
-                    422
-                );
-            }
-            entity.email = form.getEmail();
-        }
-        if (form.getPassword() != null && form.getPassword().trim().length() >= 6) {
-            if (form.getPassword().trim().length() < 6) {
-                throw new WebApplicationException(
-                    "the field password must be greater than 4",
-                    422
-                );
-            }
-            entity.password = pService.getHash(form.getPassword());
-        }
-        if (imageName != null && !imageName.isEmpty()) {
-            entity.imageName = imageName;
-        }
-        return new UserResponseDTO(entity);
+        return service.update(form, userId);
     }
 
     @DELETE
     @Transactional
     @RolesAllowed({"Therapist", "Family", "Network_Admin"})
-    public void delete() {
-        Users entity = repository.findById(jwtService.getUserId(token));
-        if (entity == null){
-            throw new NotFoundException();
-        }
+    public Response delete() {
+        Long userId = jwtService.getUserId(token);
 
-        repository.delete(entity);
+        service.delete(userId);
+
+        return Response
+            .status(Status.NO_CONTENT)
+            .entity("Unlinked succes")
+            .build();
     }
 
     @GET
     @Path("/count")
-    @RolesAllowed("")
+    @RolesAllowed({})
     public Long count() {
         return repository.count();
     }
@@ -156,11 +110,13 @@ public class UserResource {
     @GET
     @Path("/download/{imageName}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    @RolesAllowed("")
+    @RolesAllowed({})
     public Response downloadImage(@PathParam("imageName") String imageName) {
         ResponseBuilder response = Response.ok(fileService.download(imageName));
+
         response.header("Content-Disposition",
                 "attachment;filename=" + imageName);
+
         return response.build();
     }
 }

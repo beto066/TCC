@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 
 import br.unitins.model.Family;
 import br.unitins.model.Therapist;
-import br.unitins.model.Users;
+import br.unitins.model.User;
 import br.unitins.model.enums.Role;
 import br.unitins.model.enums.TrainingResult;
 
@@ -20,8 +20,8 @@ public class RegisterDTO {
     private String password;
     private Integer type;
 
-    public Users toUser(String hash) {
-        Users user = new Users();
+    public User toUser(String hash) {
+        User user = new User();
         user.name = this.name;
         user.email = this.email;
         user.password = hash;

@@ -6,18 +6,18 @@ import java.util.stream.Collectors;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import br.unitins.dto.UserResponseDTO;
-import br.unitins.model.Users;
+import br.unitins.model.User;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
-public class UserRepository implements PanacheRepository<Users>{
+public class UserRepository implements PanacheRepository<User>{
     public  List<UserResponseDTO> findAllUsers() {
         return listAll().stream()
             .map(user -> new UserResponseDTO(user))
             .collect(Collectors.toList());
     }
 
-    public  List<Users> listAllUsers() {
+    public  List<User> listAllUsers() {
         return listAll();
     }
 
@@ -27,7 +27,7 @@ public class UserRepository implements PanacheRepository<Users>{
             .collect(Collectors.toList());
     }
 
-    public  Users findByEmailAndPassword(String email, String password) {
+    public  User findByEmailAndPassword(String email, String password) {
         try {
             return find("email = ?1 AND password = ?2", email, password).singleResult();
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class UserRepository implements PanacheRepository<Users>{
         }
     }
 
-    public Users create(Users user) {
+    public User create(User user) {
         this.persist(user);
         return user;
     }

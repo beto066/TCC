@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Family")
-public class Family extends Users {
+public class Family extends User {
     @ManyToOne
     @JoinColumn(name = "patient_id")
     public Patient patient;

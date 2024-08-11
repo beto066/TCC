@@ -1,4 +1,4 @@
-package br.unitins.service;
+package br.unitins.service.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;

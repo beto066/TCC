@@ -3,11 +3,13 @@ package br.unitins.model;
 import java.io.Serializable;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 import br.unitins.model.enums.TrainingResult;
 
+@Embeddable
 public class MappedTrainingKey implements Serializable {
     @Column(name = "training_id")
     public Long trainingId;

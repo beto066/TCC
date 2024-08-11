@@ -1,11 +1,11 @@
-package br.unitins.service;
+package br.unitins.service.utils;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-import jakarta.crypto.SecretKeyFactory;
-import jakarta.crypto.spec.PBEKeySpec;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import jakarta.inject.Singleton;
 
 @Singleton

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Therapist")
-public class Therapist extends Users {
+public class Therapist extends User {
     @ManyToMany
     @JoinTable(
         name = "therapist_patient",

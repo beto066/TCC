@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -22,74 +21,62 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import br.unitins.dto.NoteTableValueDTO;
 import br.unitins.dto.NoteTableValueResoponseDTO;
-import br.unitins.model.NoteTableValue;
-import br.unitins.model.Therapist;
-import br.unitins.repository.NoteTableValueRepository;
-import br.unitins.repository.UserRepository;
-import br.unitins.service.JwtService;
+import br.unitins.service.interfaces.NoteTableValueService;
+import br.unitins.service.utils.JwtService;
 
 @Path("/users/notes/values")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class NoteTableValueResource {
     @Inject
-    private NoteTableValueRepository repository;
-
-    @Inject
     private JsonWebToken token;
 
     @Inject
     JwtService jwtService;
 
+    @Inject
+    NoteTableValueService service;
+
     @GET
     @RolesAllowed("Therapist")
     public List<NoteTableValueResoponseDTO> getAll() {
-        Long therapist = jwtService.getUserId(token);
-        return repository.findByTherapist(therapist);
+        Long therapistId = jwtService.getUserId(token);
+        return service.getAll(therapistId);
     }
 
     @GET
     @Path("/search/{search}")
     @RolesAllowed("Therapist")
     public List<NoteTableValueResoponseDTO> search(@PathParam("search") String search) {
-        Long therapist = jwtService.getUserId(token);
-        return repository.search(search, therapist);
+        Long therapistId = jwtService.getUserId(token);
+        return service.search(search, therapistId);
     }
 
     @GET
     @Path("/{id}")
     @RolesAllowed("Therapist")
-    public NoteTableValueResoponseDTO find(@PathParam("id") Long id) {
-        NoteTableValueResoponseDTO value = repository.findValue(id);
-
-        if (value == null) {
-            throw new NotFoundException();
-        }
-
-        return value;
+    public NoteTableValueResoponseDTO find(@PathParam("id") Long id) throws NotFoundException {
+        return service.find(id);
     }
 
     @POST
     @RolesAllowed("Therapist")
-    @Transactional
-    public NoteTableValueResoponseDTO store(@Valid NoteTableValueDTO dto) {
-        UserRepository uRepository = new UserRepository();
-        NoteTableValue value = dto.toNoteTableValue();
-        value.therapist = (Therapist) uRepository.findById(jwtService.getUserId(token));
-        repository.persist(value);
+    public Response store(@Valid NoteTableValueDTO dto) {
+        Long therapistId = jwtService.getUserId(token);
+        NoteTableValueResoponseDTO noteTableValue = service.store(therapistId, dto);
 
-        return new NoteTableValueResoponseDTO(value);
+        return Response
+            .status(Status.CREATED)
+            .entity(noteTableValue)
+            .build();
     }
 
     @DELETE
     @RolesAllowed("Therapist")
     @Path("/{id}")
-    @Transactional
     public Response delete(@PathParam("id") Long id) {
         Long therapistId = jwtService.getUserId(token);
-
-        NoteTableValue value = repository.findByIdAndTherapist(id, therapistId);
-        value.active = false;
+        service.delete(therapistId, id);
 
         return Response
             .status(Status.NO_CONTENT)
