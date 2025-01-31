@@ -7,14 +7,15 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
+import jakarta.persistence.Table;
 import br.unitins.model.enums.DifficultyLevel;
 import br.unitins.model.enums.NoteType;
 import br.unitins.model.enums.Program;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Note extends DefaultEntity {
+@Table(name = "notes")
+public class Note extends DefaultEntity {
     public Boolean visibilityForFamily;
 
     @ManyToOne

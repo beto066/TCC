@@ -13,6 +13,19 @@ public enum Role {
         this.label = label;
     }
 
+    public static Role valueOfRole(String label) {
+        Role[] values = Role.values();
+        Role role = null;
+
+        for (int i = 0; i < values.length && role == null; i++) {
+            if (values[i].label == label) {
+                role = values[i];
+            }
+        }
+
+        return role;
+    }
+
     public static Role valueOf(Integer id) {
         Role[] values = Role.values();
         Role role = null;

@@ -21,7 +21,9 @@ public class NoteTableValueServiceImpl implements NoteTableValueService {
 
     @Override
     public List<NoteTableValueResoponseDTO> getAll(Long therapistId) {
-        return repository.findByTherapist(therapistId);
+        Therapist therapist = new Therapist();
+        therapist.id = therapistId;
+        return repository.findByTherapist(therapist);
     }
 
     @Override

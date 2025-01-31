@@ -35,7 +35,7 @@ public class AuthResource {
 
         if (validUser == null){
             return Response
-                .status(Status.NO_CONTENT)
+                .status(Status.UNAUTHORIZED)
                 .entity("Usuário não encontrado.")
                 .build();
         }

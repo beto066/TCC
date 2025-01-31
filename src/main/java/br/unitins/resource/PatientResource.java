@@ -1,5 +1,7 @@
 package br.unitins.resource;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -12,6 +14,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -21,6 +24,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import br.unitins.dto.NoteResponseDTO;
 import br.unitins.dto.PatientDTO;
 import br.unitins.dto.PatientResponseDTO;
+import br.unitins.model.User;
 import br.unitins.service.interfaces.PatientService;
 import br.unitins.service.utils.JwtService;
 
@@ -53,7 +57,32 @@ public class PatientResource {
     }
 
     @GET
-    @Path("{id}/notes")
+    @Path("/count")
+    @RolesAllowed({"Therapist", "Family"})
+    public Long count(
+        @QueryParam("from") String from,
+        @QueryParam("to") String to
+    ) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+
+        User user = jwtService.getUser(token);
+
+        LocalDateTime dateTimeFrom = null;
+        LocalDateTime dateTimeTo = null;
+
+        if (from != null && !from.isEmpty()) {
+            dateTimeFrom = LocalDateTime.parse(from, formatter);
+        }
+
+        if (to != null && !to.isEmpty()) {
+            dateTimeTo = LocalDateTime.parse(to, formatter);
+        }
+
+        return service.count(user, dateTimeFrom, dateTimeTo);
+    }
+
+    @GET
+    @Path("/{id}/notes")
     @RolesAllowed({"Therapist", "Family"})
     public List<NoteResponseDTO> listNotes(@PathParam("id") Long id) {
         return service.listNotes(id);

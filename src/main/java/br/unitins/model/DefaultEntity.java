@@ -1,6 +1,6 @@
 package br.unitins.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -19,19 +19,19 @@ public class DefaultEntity extends PanacheEntityBase {
     public Long id;
 
     @Column(name = "created_at")
-    public LocalDate createdAt;
+    public LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    public LocalDate updatedAt;
+    public LocalDateTime updatedAt;
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDate.now();
+        createdAt = LocalDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = LocalDate.now();
+        updatedAt = LocalDateTime.now();
     }
 
     @Override

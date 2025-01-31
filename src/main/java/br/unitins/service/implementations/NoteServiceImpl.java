@@ -1,5 +1,8 @@
 package br.unitins.service.implementations;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -17,10 +20,12 @@ import br.unitins.model.NoteTable;
 import br.unitins.model.NoteTraining;
 import br.unitins.model.Notepad;
 import br.unitins.model.Patient;
+import br.unitins.model.User;
 import br.unitins.model.enums.DifficultyLevel;
 import br.unitins.model.enums.NoteType;
 import br.unitins.model.enums.Program;
 import br.unitins.model.enums.Role;
+import br.unitins.repository.MappedTrainingRepository;
 import br.unitins.repository.NoteRepository;
 import br.unitins.repository.NoteTableValueRepository;
 import br.unitins.repository.PatientRepository;
@@ -41,25 +46,45 @@ public class NoteServiceImpl implements NoteService {
     @Inject
     private JwtService jwtService;
 
+    @Inject
+    private MappedTrainingRepository mappedTrainingRepository;
+
     @Override
-    public NoteResponseDTO findById(Long id) {
+    public NoteResponseDTO findById(Long id) throws NotFoundException {
         Note note = repository.findById(id);
 
-        if (note.type.getId() == NoteType.NOTETABLE.getId()) {
-            return new NoteTableResponseDTO((NoteTable) note);
-        }
-        if (note.type.getId() == NoteType.NOTEPAD.getId()) {
-            return new NotepadResponseDTO((Notepad) note);
-        }
-        if (note.type.getId() == NoteType.NOTETRAINING.getId()) {
-            return new NoteTrainingResponseDTO((NoteTraining) note);
-        }
-
-        throw new NotFoundException();
+        return formatResponseDTO(note);
     }
 
     @Override
-    public NoteTableResponseDTO createNoteTable(NoteTableDTO dto, JsonWebToken token) {
+    public List<NoteResponseDTO> list(User user) {
+        return repository.findByUser(user).stream().map(
+            (note) -> formatResponseDTO(note)
+        ).toList();
+    }
+
+    @Override
+    public List<NoteResponseDTO> findByPatient(Long patientId) {
+        Patient patient = new Patient();
+        patient.id = patientId;
+
+        return repository.findByPatient(patient).stream().map(
+            (note) -> formatResponseDTO(note)
+        ).toList();
+    }
+
+    @Override
+    public Map<String, Double> findStatistics() throws Exception {
+        return mappedTrainingRepository.findStatistics();
+    }
+
+    @Override
+    public Long count(User user, LocalDateTime from, LocalDateTime to) {
+        return repository.count(user, from, to);
+    }
+
+    @Override
+    public NoteTableResponseDTO createNoteTable(NoteTableDTO dto, JsonWebToken token) throws NotFoundException {
         PatientRepository patRepository = new PatientRepository();
         TherapistRepository thRepository = new TherapistRepository();
         NoteTableValueRepository vRepository = new NoteTableValueRepository();
@@ -94,7 +119,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public NoteTrainingResponseDTO createNoteTraining(NoteTrainingDTO dto, JsonWebToken token) {
+    public NoteTrainingResponseDTO createNoteTraining(NoteTrainingDTO dto, JsonWebToken token) throws NotFoundException {
         PatientRepository patRepository = new PatientRepository();
         TherapistRepository thRepository = new TherapistRepository();
         Program program = Program.valueOf(dto.getProgram());
@@ -128,7 +153,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public NotepadResponseDTO createNotepad(NotepadDTO dto, JsonWebToken token) {
+    public NotepadResponseDTO createNotepad(NotepadDTO dto, JsonWebToken token) throws NotFoundException {
         PatientRepository patRepository = new PatientRepository();
         UserRepository uRepository = new UserRepository();
         Program program = Program.valueOf(dto.getProgram());
@@ -160,7 +185,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note update(Long id, NoteResumeDTO dto, JsonWebToken token) {
+    public Note update(Long id, NoteResumeDTO dto, JsonWebToken token) throws WebApplicationException {
         NoteTableValueRepository vRepository = new NoteTableValueRepository();
 
         Note note = repository.findById(id);
@@ -189,5 +214,19 @@ public class NoteServiceImpl implements NoteService {
         }
 
         return note;
+    }
+
+    private NoteResponseDTO formatResponseDTO(Note note) {
+        if (note.type.getId() == NoteType.NOTETABLE.getId()) {
+            return new NoteTableResponseDTO((NoteTable) note);
+        }
+        if (note.type.getId() == NoteType.NOTEPAD.getId()) {
+            return new NotepadResponseDTO((Notepad) note);
+        }
+        if (note.type.getId() == NoteType.NOTETRAINING.getId()) {
+            return new NoteTrainingResponseDTO((NoteTraining) note);
+        }
+
+        throw new NotFoundException();
     }
 }

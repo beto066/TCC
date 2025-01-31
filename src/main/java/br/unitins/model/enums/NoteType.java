@@ -26,6 +26,19 @@ public enum NoteType {
         return noteType;
     }
 
+    public static NoteType valueOf(Long id) {
+        NoteType[] values = NoteType.values();
+        NoteType noteType = null;
+
+        for (int i = 0; i < values.length && noteType == null; i++) {
+            if (values[i].id == Integer.parseInt(id.toString())) {
+                noteType = values[i];
+            }
+        }
+
+        return noteType;
+    }
+
     public Integer getId() {
         return id;
     }

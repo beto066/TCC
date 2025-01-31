@@ -1,5 +1,6 @@
 package br.unitins.service.implementations;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,6 +55,18 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List<PatientResponseDTO> search(String search, Long therapistId) {
         return patientRepository.search(search, therapistId);
+    }
+
+    @Override
+    public Long count(User user, LocalDateTime from, LocalDateTime to) {
+        if (user instanceof Therapist) {
+            return patientRepository.count((Therapist) user, from, to);
+        }
+        if (user instanceof Family) {
+            return patientRepository.count((Family) user, from, to);
+        }
+
+        return 0l;
     }
 
     @Override

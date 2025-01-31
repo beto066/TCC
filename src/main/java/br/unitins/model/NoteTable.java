@@ -7,7 +7,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "NoteTable")
+@Table(name = "note_tables")
 public class NoteTable extends Note {
     @OneToMany(mappedBy = "table")
     public List<MappedTableValue> values;

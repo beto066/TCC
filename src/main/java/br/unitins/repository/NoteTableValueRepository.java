@@ -8,6 +8,7 @@ import jakarta.persistence.NoResultException;
 
 import br.unitins.dto.NoteTableValueResoponseDTO;
 import br.unitins.model.NoteTableValue;
+import br.unitins.model.Therapist;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
@@ -33,8 +34,8 @@ public class NoteTableValueRepository implements PanacheRepository<NoteTableValu
             .collect(Collectors.toList());
     }
 
-    public List<NoteTableValueResoponseDTO> findByTherapist(Long id) {
-        return find("therapist_id = ?1 AND active = true", id).stream()
+    public List<NoteTableValueResoponseDTO> findByTherapist(Therapist therapist) {
+        return find("therapist = ?1 AND active = true", therapist).stream()
             .map(value -> new NoteTableValueResoponseDTO(value))
             .collect(Collectors.toList());
     }
