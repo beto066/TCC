@@ -79,7 +79,7 @@ public class PatientServiceImpl implements PatientService {
                 return new NotepadResponseDTO((Notepad) n);
             }
             if (n.type.getId() == NoteType.NOTETRAINING.getId()) {
-            return new NoteTrainingResponseDTO((NoteTraining) n);
+                return new NoteTrainingResponseDTO((NoteTraining) n);
             }
             throw new NotFoundException();
         }).collect(Collectors.toList());
