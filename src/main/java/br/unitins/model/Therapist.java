@@ -10,11 +10,11 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "Therapist")
+@Table(name = "therapists")
 public class Therapist extends User {
     @ManyToMany
     @JoinTable(
-        name = "therapist_patient",
+        name = "therapist_patients",
         joinColumns = @JoinColumn(name = "therapist_id"),
         inverseJoinColumns = @JoinColumn(name = "patient_id")
     )

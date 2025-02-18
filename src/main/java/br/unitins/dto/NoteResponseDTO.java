@@ -1,5 +1,7 @@
 package br.unitins.dto;
 
+import java.time.LocalDateTime;
+
 import br.unitins.model.Note;
 
 public abstract class NoteResponseDTO {
@@ -7,6 +9,7 @@ public abstract class NoteResponseDTO {
     private String program;
     private String type;
     private String level;
+    private LocalDateTime createdAt;
 
     public NoteResponseDTO(Note note) {
         patient = new PatientResponseDTO(note.patient);
@@ -18,6 +21,9 @@ public abstract class NoteResponseDTO {
         }
         if (note.level != null) {
             level = note.level.getLabel();
+        }
+        if (note.createdAt != null) {
+            createdAt = note.createdAt;
         }
     }
 
@@ -51,5 +57,13 @@ public abstract class NoteResponseDTO {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

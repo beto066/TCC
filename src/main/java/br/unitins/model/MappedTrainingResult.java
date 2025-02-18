@@ -8,7 +8,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "mapped_training_result")
+@Table(name = "mapped_training_results")
 public class MappedTrainingResult {
     @EmbeddedId
     public MappedTrainingKey id;
