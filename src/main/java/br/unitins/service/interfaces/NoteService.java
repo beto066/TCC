@@ -14,7 +14,6 @@ import br.unitins.dto.NoteTrainingDTO;
 import br.unitins.dto.NoteTrainingResponseDTO;
 import br.unitins.dto.NotepadDTO;
 import br.unitins.dto.NotepadResponseDTO;
-import br.unitins.model.Note;
 import br.unitins.model.User;
 import jakarta.validation.Valid;
 
@@ -35,5 +34,5 @@ public interface NoteService {
 
     NotepadResponseDTO createNotepad(@Valid NotepadDTO dto, JsonWebToken token);
 
-    Note update(Long id, NoteResumeDTO dto, JsonWebToken token);
+    NoteResponseDTO update(Long id, NoteResumeDTO dto, JsonWebToken token);
 }

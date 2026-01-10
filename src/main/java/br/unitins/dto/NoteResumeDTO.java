@@ -6,6 +6,7 @@ import java.util.List;
 public class NoteResumeDTO {
     private ArrayList<String> body;
     private List<MappedTableValueDTO> values;
+    private List<MappedTrainingResultDTO> results;
     private Boolean visibilityForFamily;
 
     public ArrayList<String> getBody() {
@@ -22,6 +23,14 @@ public class NoteResumeDTO {
 
     public void setValues(List<MappedTableValueDTO> values) {
         this.values = values;
+    }
+
+    public List<MappedTrainingResultDTO> getResults() {
+        return results;
+    }
+
+    public void setResults(List<MappedTrainingResultDTO> results) {
+        this.results = results;
     }
 
     public Boolean getVisibilityForFamily() {

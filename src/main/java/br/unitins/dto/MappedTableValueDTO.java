@@ -14,23 +14,27 @@ public class MappedTableValueDTO {
     public MappedTableValue toMappedTableValue(NoteTableValueRepository vRepository) {
         MappedTableValue mapped = new MappedTableValue();
         mapped.value = vRepository.findById(valueId);
-        mapped.position = position;
         mapped.id = new MappedTableKey();
         mapped.id.tableId = tableId;
         mapped.id.tableId = valueId;
+        mapped.id.position = position;
         return mapped;
     }
 
     public MappedTableValue toMappedTableValue(NoteTableValueRepository vRepository, NoteTable note) {
         MappedTableValueRepository repository = new MappedTableValueRepository();
+
         MappedTableValue mapped = new MappedTableValue();
         mapped.value = vRepository.findById(valueId);
-        mapped.position = position;
         mapped.table = note;
         mapped.id = new MappedTableKey();
         mapped.id.tableId = note.id;
-        mapped.id.tableId = valueId;
-        repository.persist(mapped);
+        mapped.id.position = position;
+
+        if (!repository.isPresent(mapped.id)) {
+            repository.persist(mapped);
+        }
+
         return mapped;
     }
 

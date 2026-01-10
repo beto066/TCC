@@ -1,6 +1,7 @@
 package br.unitins.service.implementations;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -146,7 +147,7 @@ public class NoteServiceImpl implements NoteService {
         repository.persist(note);
 
         note.results = dto.getResults().stream().map(
-            v -> v.toMappedTableValue(note)
+            v -> v.toMappedTrainingResult(note)
         ).collect(Collectors.toList());
 
         return new NoteTrainingResponseDTO(note);
@@ -185,7 +186,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note update(Long id, NoteResumeDTO dto, JsonWebToken token) throws WebApplicationException {
+    public NoteResponseDTO update(Long id, NoteResumeDTO dto, JsonWebToken token) throws WebApplicationException {
         NoteTableValueRepository vRepository = new NoteTableValueRepository();
 
         Note note = repository.findById(id);
@@ -204,16 +205,37 @@ public class NoteServiceImpl implements NoteService {
         if (note.type == NoteType.NOTEPAD) {
             Notepad pad = (Notepad) note;
 
+            if (dto.getBody() == null) {
+                dto.setBody(new ArrayList<>());
+            }
+
             pad.body = dto.getBody();
+            return new NotepadResponseDTO(pad);
         } else if (note.type == NoteType.NOTETABLE) {
             NoteTable table = (NoteTable) note;
+
+            if (dto.getValues() == null) {
+                dto.setValues(new ArrayList<>());
+            }
 
             table.values = dto.getValues().stream().map(
                 v -> v.toMappedTableValue(vRepository, table)
             ).collect(Collectors.toList());
+
+            return new NoteTableResponseDTO(table);
+        } else if (note.type == NoteType.NOTETRAINING) {
+            NoteTraining training = (NoteTraining) note;
+
+            if (dto.getResults() == null) {
+                dto.setResults(new ArrayList<>());
+            }
+
+            training.results = dto.getResults().stream().map(
+                r -> r.toMappedTrainingResult(training)
+            ).collect(Collectors.toList());
         }
 
-        return note;
+        return new NoteTrainingResponseDTO((NoteTraining) note);
     }
 
     private NoteResponseDTO formatResponseDTO(Note note) {

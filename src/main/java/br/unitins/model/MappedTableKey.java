@@ -10,15 +10,14 @@ public class MappedTableKey implements Serializable {
     @Column(name = "table_id")
     public Long tableId;
 
-    @Column(name = "value_id")
-    public Long valueId;
+    public Integer position;
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((tableId == null) ? 0 : tableId.hashCode());
-        result = prime * result + ((valueId == null) ? 0 : valueId.hashCode());
+        result = prime * result + ((position == null) ? 0 : position.hashCode());
         return result;
     }
 
@@ -36,10 +35,10 @@ public class MappedTableKey implements Serializable {
                 return false;
         } else if (!tableId.equals(other.tableId))
             return false;
-        if (valueId == null) {
-            if (other.valueId != null)
+        if (position == null) {
+            if (other.position != null)
                 return false;
-        } else if (!valueId.equals(other.valueId))
+        } else if (!position.equals(other.position))
             return false;
         return true;
     }

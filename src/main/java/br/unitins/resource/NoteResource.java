@@ -28,7 +28,6 @@ import br.unitins.dto.NoteResumeDTO;
 import br.unitins.dto.NoteTableDTO;
 import br.unitins.dto.NoteTrainingDTO;
 import br.unitins.dto.NotepadDTO;
-import br.unitins.model.Note;
 import br.unitins.model.User;
 import br.unitins.service.interfaces.NoteService;
 import br.unitins.service.utils.JwtService;
@@ -134,7 +133,7 @@ public class NoteResource {
     @RolesAllowed({"Therapist", "Family"})
     @Transactional
     public Response update(@PathParam("id") Long id, @Valid NoteResumeDTO dto) {
-        Note note = service.update(id, dto, token);
+        NoteResponseDTO note = service.update(id, dto, token);
 
         return Response
             .status(Status.OK)

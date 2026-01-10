@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../.."
+		},
+		{
+			"path": "../../../../../../../../optativaI"
+		}
+	],
+	"settings": {
+		"microprofile.tools.validation.unknown.excluded": [
+			"*/mp-rest/providers/*/priority",
+			"mp.openapi.schema.*",
+			"kafka-streams.*",
+			"camel.*",
+			"smallrye.jwt.sign.key.location",
+			"quarkus.kubernetes.expose",
+			"quarkus.kubernetes.*",
+			"quarkus.container-image.*",
+			"quarkus.swagger-ui.*"
+		],
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}

@@ -10,7 +10,7 @@ public class NoteTrainingResponseDTO extends NoteResponseDTO {
 
     public NoteTrainingResponseDTO(NoteTraining note) {
         super(note);
-        results = note.results.stream().map(r -> r.id.result.getLabel()).collect(Collectors.toList());
+        results = note.results.stream().map(r -> r.result.getLabel()).collect(Collectors.toList());
     }
 
     public List<String> getResults() {

@@ -11,24 +11,34 @@ public class MappedTrainingResultDTO {
     private Integer resultId;
     private Integer position;
 
-    public MappedTrainingResult toMappedTableValue() {
+    public MappedTrainingResult toMappedTrainingResult() {
         MappedTrainingResult mapped = new MappedTrainingResult();
-        mapped.position = position;
         mapped.id = new MappedTrainingKey();
         mapped.id.trainingId = trainingId;
-        mapped.id.result = TrainingResult.valueOf(resultId);
+        mapped.result = TrainingResult.valueOf(resultId);
+        mapped.id.position = position;
         return mapped;
     }
 
-    public MappedTrainingResult toMappedTableValue(NoteTraining note) {
+    public MappedTrainingResult toMappedTrainingResult(NoteTraining note) {
         MappedTrainingRepository repository = new MappedTrainingRepository();
-        MappedTrainingResult mapped = new MappedTrainingResult();
-        mapped.position = position;
+
+        MappedTrainingKey id = new MappedTrainingKey();
+        id.trainingId = trainingId;
+        id.position = position;
+
+        MappedTrainingResult mapped = repository.find(id);
+
+        if (mapped == null) {
+            mapped = new MappedTrainingResult();
+            mapped.training = note;
+            mapped.result = TrainingResult.valueOf(resultId);
+            repository.persist(mapped);
+        }
+
         mapped.training = note;
-        mapped.id = new MappedTrainingKey();
-        mapped.id.trainingId = trainingId;
-        mapped.id.result = TrainingResult.valueOf(resultId);
-        repository.persist(mapped);
+        mapped.result = TrainingResult.valueOf(resultId);
+
         return mapped;
     }
 

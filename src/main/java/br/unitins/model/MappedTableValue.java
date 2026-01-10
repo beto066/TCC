@@ -19,9 +19,6 @@ public class MappedTableValue {
     public NoteTable table;
 
     @ManyToOne
-    @MapsId("valueId")
     @JoinColumn(name = "value_id")
     public NoteTableValue value;
-
-    public Integer position;
 }
