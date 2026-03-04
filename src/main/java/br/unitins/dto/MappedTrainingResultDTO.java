@@ -1,6 +1,5 @@
 package br.unitins.dto;
 
-import br.unitins.model.MappedTrainingKey;
 import br.unitins.model.MappedTrainingResult;
 import br.unitins.model.NoteTraining;
 import br.unitins.model.enums.TrainingResult;
@@ -13,31 +12,33 @@ public class MappedTrainingResultDTO {
 
     public MappedTrainingResult toMappedTrainingResult() {
         MappedTrainingResult mapped = new MappedTrainingResult();
-        mapped.id = new MappedTrainingKey();
-        mapped.id.trainingId = trainingId;
         mapped.result = TrainingResult.valueOf(resultId);
-        mapped.id.position = position;
+        mapped.position = position;
         return mapped;
+    }
+
+    @Override
+    public String toString() {
+        return "MappedTrainingResultDTO [trainingId=" + trainingId + ", resultId=" + resultId + ", position=" + position
+                + "]";
     }
 
     public MappedTrainingResult toMappedTrainingResult(NoteTraining note) {
         MappedTrainingRepository repository = new MappedTrainingRepository();
 
-        MappedTrainingKey id = new MappedTrainingKey();
-        id.trainingId = trainingId;
-        id.position = position;
-
-        MappedTrainingResult mapped = repository.find(id);
+        MappedTrainingResult mapped = repository.findByPosition(position, note.id);
 
         if (mapped == null) {
             mapped = new MappedTrainingResult();
             mapped.training = note;
             mapped.result = TrainingResult.valueOf(resultId);
+            mapped.position = position;
             repository.persist(mapped);
         }
 
         mapped.training = note;
         mapped.result = TrainingResult.valueOf(resultId);
+        mapped.position = position;
 
         return mapped;
     }

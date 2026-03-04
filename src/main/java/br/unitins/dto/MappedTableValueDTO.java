@@ -1,6 +1,5 @@
 package br.unitins.dto;
 
-import br.unitins.model.MappedTableKey;
 import br.unitins.model.MappedTableValue;
 import br.unitins.model.NoteTable;
 import br.unitins.repository.MappedTableValueRepository;
@@ -14,10 +13,7 @@ public class MappedTableValueDTO {
     public MappedTableValue toMappedTableValue(NoteTableValueRepository vRepository) {
         MappedTableValue mapped = new MappedTableValue();
         mapped.value = vRepository.findById(valueId);
-        mapped.id = new MappedTableKey();
-        mapped.id.tableId = tableId;
-        mapped.id.tableId = valueId;
-        mapped.id.position = position;
+        mapped.position = position;
         return mapped;
     }
 
@@ -27,11 +23,9 @@ public class MappedTableValueDTO {
         MappedTableValue mapped = new MappedTableValue();
         mapped.value = vRepository.findById(valueId);
         mapped.table = note;
-        mapped.id = new MappedTableKey();
-        mapped.id.tableId = note.id;
-        mapped.id.position = position;
+        mapped.position = position;
 
-        if (!repository.isPresent(mapped.id)) {
+        if (!repository.isPresent(mapped.position, mapped.table.id)) {
             repository.persist(mapped);
         }
 

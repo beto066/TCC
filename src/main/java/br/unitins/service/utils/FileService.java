@@ -56,8 +56,6 @@ public class FileService {
         fos.flush();
         fos.close();
 
-        // System.out.println(path);
-
         return fileName;
     }
 

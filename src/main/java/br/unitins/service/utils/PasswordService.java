@@ -32,9 +32,4 @@ public class PasswordService {
             throw new RuntimeException(e);
         }
     }
-
-    public static void main(String[] args) {
-        PasswordService service = new PasswordService();
-        System.out.println(service.getHash("123"));
-    }
 }

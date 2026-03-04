@@ -230,9 +230,11 @@ public class NoteServiceImpl implements NoteService {
                 dto.setResults(new ArrayList<>());
             }
 
+
             training.results = dto.getResults().stream().map(
                 r -> r.toMappedTrainingResult(training)
             ).collect(Collectors.toList());
+
         }
 
         return new NoteTrainingResponseDTO((NoteTraining) note);

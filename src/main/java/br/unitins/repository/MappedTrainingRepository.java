@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import br.unitins.model.MappedTrainingKey;
 import br.unitins.model.MappedTrainingResult;
 import br.unitins.model.enums.TrainingResult;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
@@ -50,20 +49,20 @@ public class MappedTrainingRepository implements PanacheRepository<MappedTrainin
         return statisticsMap;
     }
 
-    public boolean isPresent(MappedTrainingKey serializable) {
+    public boolean isPresent(Integer position, Integer noteId) {
         return find(
-            "id.trainingId = ?1 AND id.position = ?2",
-            serializable.trainingId,
-            serializable.position
+            "position = ?1 AND training.id = ?2",
+            position,
+            noteId
         ).singleResultOptional().isPresent();
     }
 
-    public MappedTrainingResult find(MappedTrainingKey id) {
+    public MappedTrainingResult findByPosition(Integer position, Long noteId) {
         return find(
-            "id.trainingId = ?1 AND id.position = ?2",
-            id.trainingId,
-            id.position
-        ).singleResult();
+            "position = ?1 AND training.id = ?2",
+            position,
+            noteId
+        ).firstResult();
     }
 
     public MappedTrainingResult persistOrUpdate(MappedTrainingResult mapped) {
@@ -71,7 +70,7 @@ public class MappedTrainingRepository implements PanacheRepository<MappedTrainin
             throw new IllegalArgumentException("Entidade ou chave composta não pode ser null");
         }
 
-        if (isPresent(mapped.id)) {
+        if (isPresent(mapped.position, mapped.result.getId())) {
             return getEntityManager().merge(mapped);
         } else {
             persist(mapped);

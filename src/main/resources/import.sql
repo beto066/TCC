@@ -5,12 +5,12 @@ INSERT INTO Users(name, email, password, created_at) VALUES ('The rock', 'theroc
 INSERT INTO Therapists(id) VALUES (1);
 INSERT INTO Therapists(id) VALUES (3);
 
-INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('SU', 'SUCCES', true, 1);
-INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('ST', 'Succes with tip', true, 1);
-INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('ER', 'Error', true, 1);
-INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('SU', 'SUCCES', true, 3);
-INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('ST', 'Succes with tip', true, 3);
-INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('ER', 'Error', true, 3);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('SUC', 'SUCCES', true, 1);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('DICA', 'Succes with tip', true, 1);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('ERR', 'Error', true, 1);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('SUC', 'SUCCES', true, 3);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('DICA', 'Succes with tip', true, 3);
+INSERT INTO NoteTableValue(label, value, active, therapist_id) VALUES ('ERR', 'Error', true, 3);
 
 INSERT INTO Patient(birth, name, tratment_started_at, created_at) VALUES ('10-18-2022', 'jose', '10-18-2023', '11-01-2024');
 INSERT INTO Patient(birth, name, tratment_started_at, created_at) VALUES ('10-18-2022', 'joilson', '10-18-2023', '11-01-2024');
@@ -46,14 +46,14 @@ INSERT INTO Note_Tables(id) VALUES (7);
 INSERT INTO Note_Tables(id) VALUES (8);
 INSERT INTO Note_Tables(id) VALUES (9);
 
-INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (1, 0, 4);
-INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (2, 1, 4);
-INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (3, 2, 4);
-INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (1, 0, 5);
-INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (2, 1, 5);
-INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (1, 0, 6);
-INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (2, 1, 6);
-INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (3, 2, 6);
+INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (0, 0, 4);
+INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (1, 1, 4);
+INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (2, 2, 4);
+INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (0, 0, 5);
+INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (1, 1, 5);
+INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (0, 0, 6);
+INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (1, 1, 6);
+INSERT INTO Mapped_Training_Results(position, result, training_id) VALUES (2, 2, 6);
 
 INSERT INTO mapped_table_values(position, value_id, table_id) VALUES (0, 1, 7);
 INSERT INTO mapped_table_values(position, value_id, table_id) VALUES (1, 2, 7);
