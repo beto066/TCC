@@ -34,9 +34,9 @@ INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, lev
 INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 1, 3, 0, 1, 0, NOW());
 INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 1, 3, 0, 1, 0, NOW());
 
-INSERT INTO Notepads(id, title, body) VALUES (1, 'anotação do dia 11/11/2023', '["Hello mundo"]');
+INSERT INTO Notepads(id, title, body) VALUES (1, 'anotação do dia 11/11/2023', '["Lorem Ipsum is simply dummy text of the printing and typesetting industry. "]');
 INSERT INTO Notepads(id, title, body) VALUES (2, 'anotação do dia 11/11/2023', '["Ele demonstra comportamentos impulsivos quando apresentado à alguns brinquedos satisfatórios.", "Ele parece muito alegre!"]');
-INSERT INTO Notepads(id, title, body) VALUES (3, 'anotação do dia 11/11/2023', '["E nessa loucura", "de negar o meu desejo", "eu te quero mais que tudo", "eu preciso do seu beijo", "eu entrego a minha vida", "pra vc fazer oq quiser de mim."]');
+INSERT INTO Notepads(id, title, body) VALUES (3, 'anotação do dia 11/11/2023', '["Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. "]');
 
 INSERT INTO Note_Trainings(id) VALUES (4);
 INSERT INTO Note_Trainings(id) VALUES (5);
