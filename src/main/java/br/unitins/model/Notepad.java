@@ -11,9 +11,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "notepads")
 public class Notepad extends Note {
-    @Column(name = "title")
-    public String title;
-
     @Column(columnDefinition = "TEXT")
     @Convert(converter = StringListConverter.class)
     public ArrayList<String> body;

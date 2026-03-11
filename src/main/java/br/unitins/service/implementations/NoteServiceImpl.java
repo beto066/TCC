@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import br.unitins.dto.NoteFilterDTO;
 import br.unitins.dto.NoteResponseDTO;
 import br.unitins.dto.NoteResumeDTO;
 import br.unitins.dto.NoteTableDTO;
@@ -60,6 +61,13 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<NoteResponseDTO> list(User user) {
         return repository.findByUser(user).stream().map(
+            (note) -> formatResponseDTO(note)
+        ).toList();
+    }
+
+    @Override
+    public List<NoteResponseDTO> list(User user, NoteFilterDTO dto) {
+        return repository.searchByUser(user, dto).stream().map(
             (note) -> formatResponseDTO(note)
         ).toList();
     }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import br.unitins.dto.NoteFilterDTO;
 import br.unitins.dto.NoteResponseDTO;
 import br.unitins.dto.NoteResumeDTO;
 import br.unitins.dto.NoteTableDTO;
@@ -21,6 +22,8 @@ public interface NoteService {
     NoteResponseDTO findById(Long id);
 
     List<NoteResponseDTO> list(User user);
+
+    List<NoteResponseDTO> list(User user, NoteFilterDTO dto);
 
     List<NoteResponseDTO> findByPatient(Long patientId);
 

@@ -16,6 +16,7 @@ import br.unitins.model.enums.Program;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "notes")
 public class Note extends DefaultEntity {
+    public String title;
     public Boolean visibilityForFamily;
 
     @ManyToOne
