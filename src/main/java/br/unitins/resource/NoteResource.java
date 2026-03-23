@@ -17,6 +17,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -130,21 +131,19 @@ public class NoteResource {
     @Path("/count")
     @RolesAllowed({"Therapist", "Family"})
     public Long count(
-        @QueryParam("from") String from,
-        @QueryParam("to") String to
+        @QueryParam("from") OffsetDateTime from,
+        @QueryParam("to") OffsetDateTime to
     ) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-
         User user = jwtService.getUser(token);
         LocalDateTime dateTimeFrom = null;
         LocalDateTime dateTimeTo = null;
 
         if (from != null) {
-            dateTimeFrom = LocalDateTime.parse(from, formatter);
+            dateTimeFrom = from.toLocalDateTime();
         }
 
         if (to != null) {
-            dateTimeTo = LocalDateTime.parse(to, formatter);
+            dateTimeTo = to.toLocalDateTime();
         }
 
         return service.count(user, dateTimeFrom, dateTimeTo);

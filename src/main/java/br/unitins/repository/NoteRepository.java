@@ -22,7 +22,7 @@ public class NoteRepository implements PanacheRepository<Note> {
     public List<Note> searchByUser(User user, NoteFilterDTO dto) {
         StringBuilder query = new StringBuilder();
 
-        query.append("author = ?1 AND" );
+        query.append("author = ?1 AND ");
 
         if (dto.getTitle() != null) {
             query.append("title LIKE ?2 AND ");
