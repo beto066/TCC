@@ -1,5 +1,6 @@
 package br.unitins.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,6 +17,9 @@ import br.unitins.model.enums.Program;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "notes")
 public class Note extends DefaultEntity {
+    @Column(name = "title")
+    public String title;
+
     public Boolean visibilityForFamily;
 
     @ManyToOne

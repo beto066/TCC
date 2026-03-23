@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import br.unitins.dto.NoteFilterDTO;
 import br.unitins.dto.NoteResponseDTO;
 import br.unitins.dto.NoteResumeDTO;
 import br.unitins.dto.NoteTableDTO;
@@ -22,9 +23,12 @@ public interface NoteService {
 
     List<NoteResponseDTO> list(User user);
 
-    List<NoteResponseDTO> findByPatient(Long patientId);
+    List<NoteResponseDTO> list(User user, NoteFilterDTO dto);
 
-    Map<String, Double> findStatistics() throws Exception;
+    List<NoteResponseDTO> findByPatient(Long patientId);
+    List<NoteResponseDTO> findByPatient(Long patientId, NoteFilterDTO dto);
+
+    Map<String, Double> findStatistics(User user) throws Exception;
 
     Long count(User user, LocalDateTime from, LocalDateTime to);
 

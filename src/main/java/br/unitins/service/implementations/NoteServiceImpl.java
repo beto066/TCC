@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import br.unitins.dto.NoteFilterDTO;
 import br.unitins.dto.NoteResponseDTO;
 import br.unitins.dto.NoteResumeDTO;
 import br.unitins.dto.NoteTableDTO;
@@ -65,6 +66,23 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public List<NoteResponseDTO> list(User user, NoteFilterDTO dto) {
+        return repository.searchByUser(user, dto).stream().map(
+            (note) -> formatResponseDTO(note)
+        ).toList();
+    }
+
+    @Override
+    public List<NoteResponseDTO> findByPatient(Long patientId, NoteFilterDTO dto) {
+        Patient patient = new Patient();
+        patient.id = patientId;
+
+        return repository.findByPatient(patient, dto).stream().map(
+            (note) -> formatResponseDTO(note)
+        ).toList();
+    }
+
+    @Override
     public List<NoteResponseDTO> findByPatient(Long patientId) {
         Patient patient = new Patient();
         patient.id = patientId;
@@ -75,8 +93,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Map<String, Double> findStatistics() throws Exception {
-        return mappedTrainingRepository.findStatistics();
+    public Map<String, Double> findStatistics(User user) throws Exception {
+        return mappedTrainingRepository.findStatistics(user.id);
     }
 
     @Override

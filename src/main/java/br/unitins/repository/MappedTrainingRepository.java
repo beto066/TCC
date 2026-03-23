@@ -13,14 +13,26 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
 public class MappedTrainingRepository implements PanacheRepository<MappedTrainingResult>  {
-    public Map<String, Double> findStatistics() throws Exception {
-        String jpql = "SELECT m.result, COUNT(m) as countResults FROM MappedTrainingResult m GROUP BY m.result";
+    public Map<String, Double> findStatistics(Long authorId) throws Exception {
+
+        String jpql = """
+            SELECT m.result, COUNT(m)
+            FROM MappedTrainingResult m
+            WHERE m.training.author.id = :authorId
+            GROUP BY m.result
+        """;
+
         Query query = getEntityManager().createQuery(jpql);
+        query.setParameter("authorId", authorId);
 
         @SuppressWarnings("unchecked")
         List<Object[]> results = query.getResultList();
 
         Map<String, Double> statisticsMap = new HashMap<>();
+
+        for (TrainingResult result : TrainingResult.values()) {
+            statisticsMap.put(result.getLabel(), 0.0);
+        }
 
         Double sum = 0.0;
 
@@ -35,7 +47,7 @@ public class MappedTrainingRepository implements PanacheRepository<MappedTrainin
             }
 
             if (result[1] instanceof Long) {
-                count = 1.0 * (Long) result[1];
+                count = ((Long) result[1]).doubleValue();
                 sum += count;
             } else {
                 throw new Exception("Invalid query type");
@@ -44,7 +56,11 @@ public class MappedTrainingRepository implements PanacheRepository<MappedTrainin
             statisticsMap.put(trainingResult.getLabel(), count);
         }
 
-        statisticsMap.put("average", sum/results.size());
+        if (results.isEmpty()) {
+            statisticsMap.put("average", 0.0);
+        } else {
+            statisticsMap.put("average", sum / results.size());
+        }
 
         return statisticsMap;
     }

@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import br.unitins.dto.NoteFilterDTO;
 import br.unitins.dto.NoteResponseDTO;
 import br.unitins.dto.NoteResumeDTO;
 import br.unitins.dto.NoteTableDTO;
@@ -54,24 +55,75 @@ public class NoteResource {
 
     @GET
     @RolesAllowed({"Therapist", "Family"})
-    public List<NoteResponseDTO> list() {
-        User user = jwtService.getUser(token);
+    public List<NoteResponseDTO> list(
+        @QueryParam("title") String title,
+        @QueryParam("from") String from,
+        @QueryParam("to") String to,
+        @QueryParam("type") Integer type
+    ) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
 
-        return service.list(user);
+        User user = jwtService.getUser(token);
+        LocalDateTime dateTimeFrom = null;
+        LocalDateTime dateTimeTo = null;
+
+        if (from != null) {
+            dateTimeFrom = LocalDateTime.parse(from, formatter);
+        }
+
+        if (to != null) {
+            dateTimeTo = LocalDateTime.parse(to, formatter);
+        }
+
+        NoteFilterDTO filterDto = new NoteFilterDTO(
+            title,
+            dateTimeFrom,
+            dateTimeTo,
+            type
+        );
+
+        return service.list(user, filterDto);
     }
 
     @GET
     @Path("/patient/{id}")
     @RolesAllowed({"Therapist", "Family"})
-    public List<NoteResponseDTO> findByPatient(@PathParam("id") Long id) {
-        return service.findByPatient(id);
+    public List<NoteResponseDTO> findByPatient(
+        @PathParam("id") Long id,
+        @QueryParam("title") String title,
+        @QueryParam("from") String from,
+        @QueryParam("to") String to,
+        @QueryParam("type") Integer type
+    ) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+
+        LocalDateTime dateTimeFrom = null;
+        LocalDateTime dateTimeTo = null;
+
+        if (from != null) {
+            dateTimeFrom = LocalDateTime.parse(from, formatter);
+        }
+
+        if (to != null) {
+            dateTimeTo = LocalDateTime.parse(to, formatter);
+        }
+
+        NoteFilterDTO filterDto = new NoteFilterDTO(
+            title,
+            dateTimeFrom,
+            dateTimeTo,
+            type
+        );
+
+        return service.findByPatient(id, filterDto);
     }
 
     @GET
     @Path("/statistics")
     @RolesAllowed({"Therapist", "Family"})
     public Map<String, Double> getStatistics() throws Exception {
-        return service.findStatistics();
+        User user = jwtService.getUser(token);
+        return service.findStatistics(user);
     }
 
     @GET

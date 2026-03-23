@@ -24,19 +24,19 @@ INSERT INTO Roles(user_id, role) VALUES (1, 1);
 INSERT INTO Roles(user_id, role) VALUES (2, 2);
 INSERT INTO Roles(user_id, role) VALUES (3, 1);
 
-INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 1, 2, 0, 0, 0, NOW());
-INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 2, 1, 0, 0, 0, NOW());
-INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 3, 2, 0, 0, 0, NOW());
-INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 1, 1, 0, 2, 0, NOW());
-INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 1, 3, 0, 2, 0, NOW());
-INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 1, 3, 0, 2, 0, NOW());
-INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 1, 3, 0, 1, 0, NOW());
-INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 1, 3, 0, 1, 0, NOW());
-INSERT INTO Notes(visibilityForFamily, author_id, patient_id, program, type, level, created_at) VALUES (true, 1, 3, 0, 1, 0, NOW());
+INSERT INTO Notes(visibilityForFamily, title, author_id, patient_id, program, type, level, created_at) VALUES (true, 'anotação do dia 11/11/2023', 1, 2, 0, 0, 0, NOW());
+INSERT INTO Notes(visibilityForFamily, title, author_id, patient_id, program, type, level, created_at) VALUES (true, 'anotação do dia 11/11/2023', 2, 1, 0, 0, 0, NOW());
+INSERT INTO Notes(visibilityForFamily, title, author_id, patient_id, program, type, level, created_at) VALUES (true, 'anotação do dia 11/11/2023', 3, 2, 0, 0, 0, NOW());
+INSERT INTO Notes(visibilityForFamily, title, author_id, patient_id, program, type, level, created_at) VALUES (true, 'note do dia 11/11/2023', 1, 1, 0, 2, 0, NOW());
+INSERT INTO Notes(visibilityForFamily, title, author_id, patient_id, program, type, level, created_at) VALUES (true, 'anotação do dia 11/11/2023', 1, 3, 0, 2, 0, NOW());
+INSERT INTO Notes(visibilityForFamily, title, author_id, patient_id, program, type, level, created_at) VALUES (true, 'anotação do dia 11/11/2023', 1, 3, 0, 2, 0, NOW());
+INSERT INTO Notes(visibilityForFamily, title, author_id, patient_id, program, type, level, created_at) VALUES (true, 'anotação do dia 11/11/2023', 1, 3, 0, 1, 0, NOW());
+INSERT INTO Notes(visibilityForFamily, title, author_id, patient_id, program, type, level, created_at) VALUES (true, 'anotação do dia 11/11/2023', 1, 3, 0, 1, 0, NOW());
+INSERT INTO Notes(visibilityForFamily, title, author_id, patient_id, program, type, level, created_at) VALUES (true, 'anotação do dia 11/11/2023', 1, 3, 0, 1, 0, NOW());
 
-INSERT INTO Notepads(id, title, body) VALUES (1, 'anotação do dia 11/11/2023', '["Lorem Ipsum is simply dummy text of the printing and typesetting industry. "]');
-INSERT INTO Notepads(id, title, body) VALUES (2, 'anotação do dia 11/11/2023', '["Ele demonstra comportamentos impulsivos quando apresentado à alguns brinquedos satisfatórios.", "Ele parece muito alegre!"]');
-INSERT INTO Notepads(id, title, body) VALUES (3, 'anotação do dia 11/11/2023', '["Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. "]');
+INSERT INTO Notepads(id, body) VALUES (1, '["Lorem Ipsum is simply dummy text of the printing and typesetting industry. "]');
+INSERT INTO Notepads(id, body) VALUES (2, '["Ele demonstra comportamentos impulsivos quando apresentado à alguns brinquedos satisfatórios.", "Ele parece muito alegre!"]');
+INSERT INTO Notepads(id, body) VALUES (3, '["Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. "]');
 
 INSERT INTO Note_Trainings(id) VALUES (4);
 INSERT INTO Note_Trainings(id) VALUES (5);
