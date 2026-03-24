@@ -1,6 +1,7 @@
 package br.unitins.dto;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
@@ -16,18 +17,25 @@ public class PatientDTO {
 
     @Past(message = "Campo birth deve estar no passado")
     @AfterDate(message = "Campo birth deve ser maior ou igual a 1934-01-01", referenceDate = "1934-01-01")
-    private LocalDate birth;
+    private String birth;
 
     @Past(message = "Campo treatmentStartedAt deve estar no passado")
     @AfterDate(message = "Campo treatmentStartedAt deve ser maior ou igual a 1960-01-01", referenceDate = "1960-01-01")
-    private LocalDate treatmentStartedAt;
+    private String treatmentStartedAt;
 
     public Patient toPatient() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
         Patient patient = new Patient();
 
         patient.name = name;
-        patient.birth = birth;
-        patient.treatmentStartedAt = treatmentStartedAt;
+
+        if (birth != null) {
+            patient.birth = LocalDate.parse(birth, formatter);
+        }
+
+        if (treatmentStartedAt != null) {
+            patient.treatmentStartedAt = LocalDate.parse(treatmentStartedAt, formatter);
+        }
 
         return patient;
     }
@@ -40,19 +48,19 @@ public class PatientDTO {
         this.name = name;
     }
 
-    public LocalDate getBirth() {
+    public String getBirth() {
         return birth;
     }
 
-    public void setBirth(LocalDate birth) {
+    public void setBirth(String birth) {
         this.birth = birth;
     }
 
-    public LocalDate getTreatmentStartedAt() {
+    public String getTreatmentStartedAt() {
         return treatmentStartedAt;
     }
 
-    public void setTreatmentStartedAt(LocalDate treatmentStartedAt) {
+    public void setTreatmentStartedAt(String treatmentStartedAt) {
         this.treatmentStartedAt = treatmentStartedAt;
     }
 }
