@@ -1,7 +1,6 @@
 package br.unitins.dto;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.OffsetDateTime;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
@@ -17,24 +16,23 @@ public class PatientDTO {
 
     @Past(message = "Campo birth deve estar no passado")
     @AfterDate(message = "Campo birth deve ser maior ou igual a 1934-01-01", referenceDate = "1934-01-01")
-    private String birth;
+    private OffsetDateTime birth;
 
     @Past(message = "Campo treatmentStartedAt deve estar no passado")
     @AfterDate(message = "Campo treatmentStartedAt deve ser maior ou igual a 1960-01-01", referenceDate = "1960-01-01")
-    private String treatmentStartedAt;
+    private OffsetDateTime treatmentStartedAt;
 
     public Patient toPatient() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
         Patient patient = new Patient();
 
         patient.name = name;
 
         if (birth != null) {
-            patient.birth = LocalDate.parse(birth, formatter);
+            patient.birth = birth.toLocalDate();
         }
 
         if (treatmentStartedAt != null) {
-            patient.treatmentStartedAt = LocalDate.parse(treatmentStartedAt, formatter);
+            patient.treatmentStartedAt = treatmentStartedAt.toLocalDate();
         }
 
         return patient;
@@ -48,19 +46,19 @@ public class PatientDTO {
         this.name = name;
     }
 
-    public String getBirth() {
+    public OffsetDateTime getBirth() {
         return birth;
     }
 
-    public void setBirth(String birth) {
+    public void setBirth(OffsetDateTime birth) {
         this.birth = birth;
     }
 
-    public String getTreatmentStartedAt() {
+    public OffsetDateTime getTreatmentStartedAt() {
         return treatmentStartedAt;
     }
 
-    public void setTreatmentStartedAt(String treatmentStartedAt) {
+    public void setTreatmentStartedAt(OffsetDateTime treatmentStartedAt) {
         this.treatmentStartedAt = treatmentStartedAt;
     }
 }

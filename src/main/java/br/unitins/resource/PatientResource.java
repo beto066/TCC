@@ -1,7 +1,7 @@
 package br.unitins.resource;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -60,22 +60,20 @@ public class PatientResource {
     @Path("/count")
     @RolesAllowed({"Therapist", "Family"})
     public Long count(
-        @QueryParam("from") String from,
-        @QueryParam("to") String to
+        @QueryParam("from") OffsetDateTime from,
+        @QueryParam("to") OffsetDateTime to
     ) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-
         User user = jwtService.getUser(token);
 
         LocalDateTime dateTimeFrom = null;
         LocalDateTime dateTimeTo = null;
 
-        if (from != null && !from.isEmpty()) {
-            dateTimeFrom = LocalDateTime.parse(from, formatter);
+        if (from != null) {
+            dateTimeFrom = from.toLocalDateTime();
         }
 
-        if (to != null && !to.isEmpty()) {
-            dateTimeTo = LocalDateTime.parse(to, formatter);
+        if (to != null ) {
+            dateTimeTo = to.toLocalDateTime();
         }
 
         return service.count(user, dateTimeFrom, dateTimeTo);

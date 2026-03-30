@@ -16,7 +16,6 @@ import jakarta.validation.Payload;
 public @interface AfterDate {
     String message() default "A data deve ser depois à data de referência";
     String referenceFormatter() default "yyyy-MM-dd";
-    String payloadFormatter() default "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'";
     String referenceDate();
 
     Class<?>[] groups() default {};
