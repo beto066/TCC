@@ -45,7 +45,6 @@ public class PatientResource {
     @RolesAllowed("Therapist")
     public List<PatientResponseDTO> getAll() {
         Long therapistId = jwtService.getUserId(token);
-        System.out.println(therapistId);
         return service.getAll(therapistId);
     }
 
